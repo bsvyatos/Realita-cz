@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.demo.realita" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="Realita Demo"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.demo.realita.ListViewActivity"
+            android:label="Realita Demo" >
+            <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.demo.realita.HouseInfoActivity"
+            android:label="Realita Demo"
+            android:parentActivityName="com.demo.realita.ListViewActivity">
+            <!-- The meta-data element is needed for versions lower than 4.1 -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.demo.realita.ListViewActivity" />
+        </activity>
+
+    </application>
+
+</manifest>
