@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.delta.listviews.R;
+import com.demo.realita.R;
 
 /**
  * Created by Svyatoslav on 19-Mar-15.

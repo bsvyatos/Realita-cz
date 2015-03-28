@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.delta.listviews.R;
+import com.demo.realita.R;
 
 /**
  * Created by Svyatoslav on 14-Mar-15.
