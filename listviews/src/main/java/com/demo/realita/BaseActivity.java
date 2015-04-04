@@ -1,6 +1,8 @@
 package com.demo.realita;
 
 import android.app.Activity;
+
+import java.util.ArrayList;
 import java.util.Locale;
 
 import android.app.Fragment;
@@ -8,6 +10,7 @@ import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -34,6 +37,11 @@ public class BaseActivity extends Activity{
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mItemTitles;
+    private CustomDrawerAdapter mItemAdapter;
+    // slide menu items
+    private String[] navMenuTitles;
+    private TypedArray navMenuIcons;
+    private ArrayList<DrawerItem> navDrawerItems;
 
     protected void onCreateDrawer() {
         mTitle = mDrawerTitle = getTitle();
@@ -43,9 +51,27 @@ public class BaseActivity extends Activity{
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        // load slide menu items
+        navMenuTitles = getResources().getStringArray(R.array.sliding_menu_list);
+        // nav drawer icons from resources
+        navMenuIcons = getResources().obtainTypedArray(R.array.icons_menu_list);
+
+        navDrawerItems = new ArrayList<DrawerItem>();
+        navDrawerItems.add(new DrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
+                // Rent
+                navDrawerItems.add(new DrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
+                // Sell
+                navDrawerItems.add(new DrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
+                // Favourite
+                navDrawerItems.add(new DrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
+                // Notifications
+                navDrawerItems.add(new DrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
+                // Sing/Log in
+                navDrawerItems.add(new DrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
+
+        mItemAdapter = new CustomDrawerAdapter(this, R.layout.drawer_list_item, navDrawerItems);
         // set up the drawer's list view with items and click listener
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mItemTitles));
+        mDrawerList.setAdapter(mItemAdapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -153,19 +179,6 @@ public class BaseActivity extends Activity{
             // Empty constructor required for fragment subclasses
         }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.menu_item_fragment, container, false);
-            int i = getArguments().getInt(ARG_ITEM_NUMBER);
-            String planet = getResources().getStringArray(R.array.sliding_menu_list)[i];
-
-            int imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()),
-                    "drawable", getActivity().getPackageName());
-            ((ImageView) rootView.findViewById(R.id.menu_item_img)).setImageResource(imageId);
-            getActivity().setTitle(planet);
-            return rootView;
-        }
     }
 }
 

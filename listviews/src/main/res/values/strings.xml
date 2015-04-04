@@ -7,10 +7,21 @@
     <string name="drawer_close">Close</string>
 
     <string-array name="sliding_menu_list">
-        <item>Item1</item>
-        <item>Item2</item>
-        <item>Item3</item>
-        <item>Item4</item>
+        <item>Buy</item>
+        <item>Rent</item>
+        <item>Sell</item>
+        <item>Favourite</item>
+        <item>Notifications</item>
+        <item>Sing/Log in</item>
+    </string-array>
+
+    <string-array name="icons_menu_list">
+        <item>@drawable/ic_buy</item>
+        <item>@drawable/ic_rent</item>
+        <item>@drawable/ic_sell</item>
+        <item>@drawable/ic_fav</item>
+        <item>@drawable/ic_notif</item>
+        <item>@drawable/ic_sign</item>
     </string-array>
 
 
