@@ -12,10 +12,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.demo.realita.R;
 import com.microsoft.windowsazure.mobileservices.*;
+import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
 import com.microsoft.windowsazure.mobileservices.table.MobileServiceTable;
+import com.microsoft.windowsazure.mobileservices.table.TableOperationCallback;
 
 import java.net.MalformedURLException;
 
@@ -28,6 +31,12 @@ public class ListViewActivity extends BaseActivity {
     private ListView mListView;
     private HouseItemAdapter mHouseItemAdapter;
     MobileServiceTable<HouseItem> mHouseTable;
+
+    /*
+    HouseItem newItem = new HouseItem("MyId007", "Kubelicetopkek 19", "Pronajem", "Byt", "3+1", "Osobni", "A", "Nízkoenergetický"
+            ,"Vybavený", "Byt je za?ízený; nová kuchy?ská linka a sporák, sk?ín?, ledni?ka, kuchy?ský st?l, postele, gau?\t"
+            ,70, 4000000, 2500, 3, 15000, "wut?", "Info goes here, sometimes", false, false);
+    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +54,7 @@ public class ListViewActivity extends BaseActivity {
         mHouseTable = mClient.getTable(HouseItem.class);
 
         if (mHouseTable == null) {
-            Log.v("BIGERROR", "mHouseTalble was never received");
+            Log.v("RealitaCz", "mHouseTalble was never received");
         }
 
         super.onCreate(savedInstanceState);
@@ -78,7 +87,7 @@ public class ListViewActivity extends BaseActivity {
 
         /*
         //push HouseItem
-        mHouseTable.insert(myPlacesArray[0], new TableOperationCallback<HouseItem>() {
+        mHouseTable.insert(newItem, new TableOperationCallback<HouseItem>() {
             @Override
             public void onCompleted(HouseItem entity, Exception exception, ServiceFilterResponse response) {
                 if(exception == null){
@@ -114,6 +123,7 @@ public class ListViewActivity extends BaseActivity {
     }
 
     public void showAll(View view) {
+        //Show everything, unfiltered
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
@@ -141,6 +151,36 @@ public class ListViewActivity extends BaseActivity {
                 return null;
             }
         }.execute();
+        /*
+        //filtered
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    final MobileServiceList<HouseItem> result =
+                            mHouseTable.where().field("Terrace").eq(false).execute().get();
+
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            mHouseItemAdapter.clear();
+                            for (HouseItem item : result) {
+                                mHouseItemAdapter.add(item);
+                            }
+                        }
+                    });
+
+                    for (HouseItem item : result) {
+                        Log.i("RealitaCz", "Read object with ID " + item.Id);
+                    }
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
+        */
     }
 
 }
