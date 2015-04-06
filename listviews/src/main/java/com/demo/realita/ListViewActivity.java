@@ -33,8 +33,8 @@ public class ListViewActivity extends BaseActivity {
     MobileServiceTable<HouseItem> mHouseTable;
 
     /*
-    HouseItem newItem = new HouseItem("MyId007", "Kubelicetopkek 19", "Pronajem", "Byt", "3+1", "Osobni", "A", "Nízkoenergetický"
-            ,"Vybavený", "Byt je za?ízený; nová kuchy?ská linka a sporák, sk?ín?, ledni?ka, kuchy?ský st?l, postele, gau?\t"
+    HouseItem newItem = new HouseItem("MyId007", "Kubelicetopkek 19", "Pronajem", "Byt", "3+1", "Osobni", "A", "Nï¿½zkoenergetickï¿½"
+            ,"Vybavenï¿½", "Byt je za?ï¿½zenï¿½; novï¿½ kuchy?skï¿½ linka a sporï¿½k, sk?ï¿½n?, ledni?ka, kuchy?skï¿½ st?l, postele, gau?\t"
             ,70, 4000000, 2500, 3, 15000, "wut?", "Info goes here, sometimes", false, false);
     */
 
@@ -128,7 +128,8 @@ public class ListViewActivity extends BaseActivity {
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    final MobileServiceList<HouseItem> result = mHouseTable.execute().get();
+                    final MobileServiceList<HouseItem> result = mHouseTable.where().field("mTerrace").eq(false).execute().get();
+                    //final MobileServiceList<HouseItem> result = mHouseTable.execute().get();
                     runOnUiThread(new Runnable() {
 
                         @Override
