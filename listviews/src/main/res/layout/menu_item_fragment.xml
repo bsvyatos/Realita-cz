@@ -3,6 +3,6 @@
     android:id="@+id/menu_item_img"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#3C3F41"
     android:gravity="center"
     android:padding="32dp"/>

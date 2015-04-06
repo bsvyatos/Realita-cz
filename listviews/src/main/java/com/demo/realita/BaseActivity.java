@@ -11,6 +11,9 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.ColorFilter;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -57,17 +60,13 @@ public class BaseActivity extends Activity{
         navMenuIcons = getResources().obtainTypedArray(R.array.icons_menu_list);
 
         navDrawerItems = new ArrayList<DrawerItem>();
-        navDrawerItems.add(new DrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-                // Rent
-                navDrawerItems.add(new DrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-                // Sell
-                navDrawerItems.add(new DrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-                // Favourite
-                navDrawerItems.add(new DrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
-                // Notifications
-                navDrawerItems.add(new DrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-                // Sing/Log in
-                navDrawerItems.add(new DrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
+        for(int i=0; i<6 ;i++){
+            Drawable d = getResources().getDrawable(navMenuIcons.getResourceId(i, -1));
+            //invert Icon colours
+            InvertColour(d);
+            //add to array
+            navDrawerItems.add(new DrawerItem(navMenuTitles[i], navMenuIcons.getResourceId(i, -1)));
+        }
 
         mItemAdapter = new CustomDrawerAdapter(this, R.layout.drawer_list_item, navDrawerItems);
         // set up the drawer's list view with items and click listener
@@ -178,6 +177,21 @@ public class BaseActivity extends Activity{
         public ItemFragment() {
             // Empty constructor required for fragment subclasses
         }
+
+    }
+
+    public void InvertColour(Drawable img){
+        //To generate negative image
+        float[] colorMatrix_Negative = {
+                -1.0f, 0, 0, 0, 255, //red
+                0, -1.0f, 0, 0, 255, //green
+                0, 0, -1.0f, 0, 255, //blue
+                0, 0, 0, 1.0f, 0 //alpha
+        };
+
+        ColorFilter colorFilter_Negative = new ColorMatrixColorFilter(colorMatrix_Negative);
+
+        img.setColorFilter(colorFilter_Negative);
 
     }
 }
