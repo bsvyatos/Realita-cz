@@ -29,6 +29,13 @@
                 android:value="com.demo.realita.ListViewActivity" />
         </activity>
 
+        <activity android:name=".FilterActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".ListViewActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ListViewActivity" />
+        </activity>
     </application>
 
 </manifest>

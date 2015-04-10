@@ -2,6 +2,7 @@ package com.demo.realita;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.demo.realita.R;
+import com.google.gson.Gson;
 import com.microsoft.windowsazure.mobileservices.*;
 import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
 import com.microsoft.windowsazure.mobileservices.table.MobileServiceTable;
@@ -27,6 +29,7 @@ public class ListViewActivity extends BaseActivity {
 
     //Azure mobile service instance
     private MobileServiceClient mClient;
+    private Filter mFilter;
 
     private ListView mListView;
     private HouseItemAdapter mHouseItemAdapter;
@@ -115,11 +118,19 @@ public class ListViewActivity extends BaseActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+
+        switch (item.getItemId()){
+            case R.id.action_settings:
+                return true;
+            case R.id.action_search:
+                Intent t = new Intent(this, FilterActivity.class);
+                t.putExtra("mFilter", mFilter);
+                startActivity(t);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+
     }
 
     public void showAll(View view) {
@@ -128,8 +139,18 @@ public class ListViewActivity extends BaseActivity {
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    final MobileServiceList<HouseItem> result = mHouseTable.where().field("mTerrace").eq(false).execute().get();
-                    //final MobileServiceList<HouseItem> result = mHouseTable.execute().get();
+                    //Load/creat filter
+                    Filter mFilter = LoadFilter();
+
+                    final MobileServiceList<HouseItem> result;
+                    //query
+                    result = mHouseTable.where().field("mBalkony").eq(mFilter.mBalkon)
+                                                    .add().field("mPrice").ge(mFilter.mPricemin)
+                                                    .and().field("mPrice").le(mFilter.mPricemax)
+                                                    .add().field("mSize").ge(mFilter.mSizemin)
+                                                    .add().field("mSize").le(mFilter.mSizemax)
+                                            .execute().get();
+
                     runOnUiThread(new Runnable() {
 
                         @Override
@@ -141,48 +162,31 @@ public class ListViewActivity extends BaseActivity {
                         }
                     });
                 } catch (Exception e) {
-                    //e.printStackTrace();
-                    if (e == null) {
-                        Log.e("e", "e is really null!!!");
-                    }
-                    else {
-                        Log.e("e", "e is not null, toString is " + e + " and message is " + e.getMessage());
-                    }
+                    e.printStackTrace();
                 }
                 return null;
             }
         }.execute();
-        /*
-        //filtered
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    final MobileServiceList<HouseItem> result =
-                            mHouseTable.where().field("Terrace").eq(false).execute().get();
-
-                    runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            mHouseItemAdapter.clear();
-                            for (HouseItem item : result) {
-                                mHouseItemAdapter.add(item);
-                            }
-                        }
-                    });
-
-                    for (HouseItem item : result) {
-                        Log.i("RealitaCz", "Read object with ID " + item.Id);
-                    }
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
-                return null;
-            }
-        }.execute();
-        */
     }
 
+    public Filter LoadFilter(){
+        //Creating a shared preference
+        SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+
+        //Retrieve Filter object from Shared Preferences if possible
+        Gson gson =  new Gson();
+        String json = mPrefs.getString("mFilter", "");
+        mFilter = gson.fromJson(json, Filter.class);
+
+        if(mFilter == null){
+            mFilter = new FilterBuilder().build();
+            SharedPreferences.Editor prefsEditor = mPrefs.edit();
+            json = gson.toJson(mFilter);
+            prefsEditor.putString("mFilter", json);
+            prefsEditor.commit();
+        }
+
+        return mFilter;
+    }
 }
 
