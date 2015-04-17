@@ -27,7 +27,8 @@ public class FilterActivity extends Activity {
 
         Intent intent = getIntent();
         mFilter = intent.getExtras().getParcelable("mFilter");
-        Button bSave = (Button) findViewById(R.id.button_save);
+
+        bSave = (Button) findViewById(R.id.button_save);
         bSave.setOnClickListener(bHandler);
 
     }
@@ -38,13 +39,19 @@ public class FilterActivity extends Activity {
             pMin.getText();
 
             EditText pMax = (EditText) findViewById(R.id.price_max);
-            pMin.getText();
+            pMax.getText();
 
             EditText sMin = (EditText) findViewById(R.id.size_min);
-            pMin.getText();
+            sMin.getText();
 
             EditText sMax = (EditText) findViewById(R.id.size_max);
-            pMin.getText();
+            sMax.getText();
+
+/*            mFilter.mPricemin = Integer.parseInt(pMin.toString());
+            mFilter.mPricemax = Integer.parseInt(pMax.toString());
+            mFilter.mSizemin = Integer.parseInt(sMin.toString());
+            mFilter.mSizemax = Integer.parseInt(sMax.toString());
+*/
 
             Gson gson = new Gson();
             SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);

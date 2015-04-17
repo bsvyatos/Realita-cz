@@ -142,14 +142,16 @@ public class ListViewActivity extends BaseActivity {
                     //Load/creat filter
                     Filter mFilter = LoadFilter();
 
+
                     final MobileServiceList<HouseItem> result;
                     //query
-                    result = mHouseTable.where().field("mBalkony").eq(mFilter.mBalkon)
-                                                    .add().field("mPrice").ge(mFilter.mPricemin)
+                  result = mHouseTable.where().field("mBalkony").eq(mFilter.mBalkon)
+                                                    .and().field("mPrice").ge(mFilter.mPricemin)
                                                     .and().field("mPrice").le(mFilter.mPricemax)
-                                                    .add().field("mSize").ge(mFilter.mSizemin)
-                                                    .add().field("mSize").le(mFilter.mSizemax)
+                                                    .and().field("mSize").ge(mFilter.mSizemin)
+                                                    .and().field("mSize").le(mFilter.mSizemax)
                                             .execute().get();
+
 
                     runOnUiThread(new Runnable() {
 
