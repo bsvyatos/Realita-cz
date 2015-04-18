@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +23,10 @@ import com.google.gson.Gson;
 public class FilterActivity extends Activity {
     Button bSave;
     Filter mFilter;
+    EditText pMin;
+    EditText pMax;
+    EditText sMin;
+    EditText sMax;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +36,14 @@ public class FilterActivity extends Activity {
         Intent intent = getIntent();
         mFilter = intent.getExtras().getParcelable("mFilter");
 
+        pMin = (EditText) findViewById(R.id.price_min);
+
+        pMax = (EditText) findViewById(R.id.price_max);
+
+        sMin = (EditText) findViewById(R.id.size_min);
+
+        sMax = (EditText) findViewById(R.id.size_max);
+
         bSave = (Button) findViewById(R.id.button_save);
         bSave.setOnClickListener(bHandler);
 
@@ -35,34 +51,35 @@ public class FilterActivity extends Activity {
 
     View.OnClickListener bHandler = new View.OnClickListener() {
         public void onClick(View v) {
-            EditText pMin = (EditText) findViewById(R.id.price_min);
-            pMin.getText();
 
-            EditText pMax = (EditText) findViewById(R.id.price_max);
-            pMax.getText();
+            try {
+                mFilter.mPricemin = Integer.parseInt(pMin.getText().toString());
+            } catch(NumberFormatException s){
+                Toast.makeText(getApplicationContext(), "Exception with Minimum Price field pMin=" + pMin.toString(), Toast.LENGTH_LONG).show();
+            }
+            try {
+                mFilter.mPricemax = Integer.parseInt(pMax.getText().toString());
+            } catch(NumberFormatException s){ }
+            try {
+                mFilter.mSizemin = Integer.parseInt(sMin.getText().toString());
+            } catch(NumberFormatException s){ }
+            try {
+                mFilter.mSizemax = Integer.parseInt(sMax.getText().toString());
+            } catch(NumberFormatException s){ }
 
-            EditText sMin = (EditText) findViewById(R.id.size_min);
-            sMin.getText();
 
-            EditText sMax = (EditText) findViewById(R.id.size_max);
-            sMax.getText();
-
-/*            mFilter.mPricemin = Integer.parseInt(pMin.toString());
-            mFilter.mPricemax = Integer.parseInt(pMax.toString());
-            mFilter.mSizemin = Integer.parseInt(sMin.toString());
-            mFilter.mSizemax = Integer.parseInt(sMax.toString());
-*/
 
             Gson gson = new Gson();
-            SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+            SharedPreferences mPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor prefsEditor = mPrefs.edit();
+            prefsEditor.clear();
             String json = gson.toJson(mFilter);
             prefsEditor.putString("mFilter", json);
             prefsEditor.commit();
-            Toast.makeText(getBaseContext(), "Your preferences have been successfully saved", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "Your preferences have been successfully saved", Toast.LENGTH_SHORT).show();
+            finish();
         }
     };
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

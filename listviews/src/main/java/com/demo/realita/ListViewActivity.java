@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -173,7 +174,7 @@ public class ListViewActivity extends BaseActivity {
 
     public Filter LoadFilter(){
         //Creating a shared preference
-        SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+        SharedPreferences mPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         //Retrieve Filter object from Shared Preferences if possible
         Gson gson =  new Gson();
