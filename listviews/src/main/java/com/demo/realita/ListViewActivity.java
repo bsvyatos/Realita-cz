@@ -30,11 +30,11 @@ public class ListViewActivity extends BaseActivity {
 
     //Azure mobile service instance
     private MobileServiceClient mClient;
-    private Filter mFilter;
 
     private ListView mListView;
     private HouseItemAdapter mHouseItemAdapter;
     MobileServiceTable<HouseItem> mHouseTable;
+    private Filter mFilter;
 
     /*
     HouseItem newItem = new HouseItem("MyId007", "Kubelicetopkek 19", "Pronajem", "Byt", "3+1", "Osobni", "A", "N�zkoenergetick�"
@@ -141,11 +141,12 @@ public class ListViewActivity extends BaseActivity {
             protected Void doInBackground(Void... params) {
                 try {
                     //Load/creat filter
-                    Filter mFilter = LoadFilter();
+                    mFilter = LoadFilter();
 
 
                     final MobileServiceList<HouseItem> result;
                     //query
+                    // .add().field("mOfferType").eq(mFilter.mOfferType) missing
                   result = mHouseTable.where().field("mBalkony").eq(mFilter.mBalkon)
                                                     .and().field("mPrice").ge(mFilter.mPricemin)
                                                     .and().field("mPrice").le(mFilter.mPricemax)
@@ -191,5 +192,6 @@ public class ListViewActivity extends BaseActivity {
 
         return mFilter;
     }
+
 }
 

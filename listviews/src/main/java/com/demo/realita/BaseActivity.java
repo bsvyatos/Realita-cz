@@ -9,12 +9,14 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -28,6 +30,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+
+import com.google.gson.Gson;
 
 /**
  * Created by Svyatoslav on 30-Mar-15.
@@ -45,6 +49,8 @@ public class BaseActivity extends Activity{
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
     private ArrayList<DrawerItem> navDrawerItems;
+    private Filter mFilter;
+
 
     protected void onCreateDrawer() {
         mTitle = mDrawerTitle = getTitle();
@@ -123,7 +129,41 @@ public class BaseActivity extends Activity{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
+            drawerHandler(position);
         }
+    }
+
+    private void drawerHandler(int pos){
+        SharedPreferences mPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        Gson gson =  new Gson();
+        String json = mPrefs.getString("mFilter", "");
+        mFilter = gson.fromJson(json, Filter.class);
+
+        switch(pos){
+            case 0:
+                mFilter.mOfferType = "Prodej";
+            case 1:
+                mFilter.mOfferType = "Pronájem";
+            case 2:
+                return;
+            case 3:
+                return;
+            case 4:
+                return;
+            case 5:
+                return;
+        }
+
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        prefsEditor.clear();
+        json = gson.toJson(mFilter);
+        prefsEditor.putString("mFilter", json);
+        prefsEditor.commit();
+
+        finish();
+        startActivity(getIntent());
+        return;
     }
 
     protected void selectItem(int position) {
@@ -194,5 +234,7 @@ public class BaseActivity extends Activity{
         img.setColorFilter(colorFilter_Negative);
 
     }
+
+
 }
 
