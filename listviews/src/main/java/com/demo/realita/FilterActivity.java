@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -48,6 +49,8 @@ public class FilterActivity extends Activity {
 
         bSave.setOnClickListener(bHandler);
 
+        Intent returnIntent = new Intent();
+        setResult(RESULT_CANCELED, returnIntent);
     }
 
     View.OnClickListener bHandler = new View.OnClickListener() {
@@ -68,16 +71,10 @@ public class FilterActivity extends Activity {
                 mFilter.mSizemax = Integer.parseInt(sMax.getText().toString());
             } catch(NumberFormatException s){ }
 
-
-
-            Gson gson = new Gson();
-            SharedPreferences mPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            SharedPreferences.Editor prefsEditor = mPrefs.edit();
-            prefsEditor.clear();
-            String json = gson.toJson(mFilter);
-            prefsEditor.putString("mFilter", json);
-            prefsEditor.commit();
             Toast.makeText(getApplicationContext(), "Your preferences have been successfully saved", Toast.LENGTH_SHORT).show();
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("Filter", mFilter);
+            setResult(RESULT_OK, returnIntent);
             finish();
         }
     };

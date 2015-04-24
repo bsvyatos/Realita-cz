@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +29,8 @@ import com.google.gson.JsonElement;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.table.MobileServiceJsonTable;
 
+import org.json.JSONObject;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInput;
@@ -48,6 +51,7 @@ public class ListViewActivity extends BaseActivity {
     MobileServiceJsonTable mHouseTable;
     String fileName = "mFile";
     FavouriteArray FavArr;
+    private static final String TAG = ListViewActivity.class.getName();
     
     /*
     HouseItem newItem = new HouseItem("MyId007", "Kubelicetopkek 19", "Pronajem", "Byt", "3+1", "Osobni", "A", "N�zkoenergetick�"
@@ -70,32 +74,15 @@ public class ListViewActivity extends BaseActivity {
         //First time application is started code
         if (!mPrefs.getBoolean("firstTime", false)) {
             //Write my newly created Filter to file
-            try {
-                FileOutputStream outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
-                ObjectOutputStream os = new ObjectOutputStream(outputStream);
-                mFilter = new FilterBuilder().build();
-                os.writeObject(mFilter);
-                os.close();
-                outputStream.close();
-            } catch (Exception c) {
-                c.printStackTrace();
-            }
+            mFilter = new FilterBuilder().build();
+            SaveFilter();
+            //Save state to shared preferences
             SharedPreferences.Editor editor = mPrefs.edit();
             editor.putBoolean("firstTime", true);
             editor.commit();
         }
         //Load my file from internal storage and get Filter
-        try {
-            FileInputStream fis = openFileInput(fileName);
-            ObjectInputStream is = new ObjectInputStream(fis);
-            mFilter = (Filter) is.readObject();
-            is.close();
-            fis.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            mFilter = new FilterBuilder().build();
-        }
-
+        mFilter = LoadFilter();
         mFilter.qParam = 0;
 
         try {
@@ -177,7 +164,7 @@ public class ListViewActivity extends BaseActivity {
             case R.id.action_search:
                 Intent t = new Intent(this, FilterActivity.class);
                 t.putExtra("mFilter", mFilter);
-                startActivity(t);
+                startActivityForResult(t, 1);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -230,17 +217,77 @@ public class ListViewActivity extends BaseActivity {
     @Override
     protected void onPause() {
         //save mFilter
+        SaveFilter();
+        super.onPause();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                mFilter = data.getExtras().getParcelable("Filter");
+            }
+            if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(getBaseContext(), "Your Settings were not saved", Toast.LENGTH_LONG).show();
+            }
+        }
+    }//onActivityResult
+
+    void SaveFilter(){
+
+        JSONObject jObject = new JSONObject();
+
+        try {
+            jObject.put("mPricemin", mFilter.mPricemin);
+            jObject.put("mPricemax", mFilter.mPricemax);
+            jObject.put("mSizemin", mFilter.mSizemin);
+            jObject.put("mSizemax", mFilter.mSizemax);
+            jObject.put("mBalkon", mFilter.mBalkon);
+            jObject.put("mOfferType", mFilter.mOfferType.ordinal());
+            jObject.put("qParam", mFilter.qParam);
+        } catch(Exception e){
+            e.printStackTrace();
+            Log.e(TAG, "Can't initialize JSONObject: " + e.getMessage());
+        }
+
         try {
             FileOutputStream fos = openFileOutput(fileName, Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
-            os.writeObject(mFilter);
+            os.writeObject(jObject);
             os.close();
             fos.close();
+
         } catch(Exception e){
             e.printStackTrace();
+            Log.e(TAG, "Can't save filter to file: " + e.getMessage());
         }
-        super.onPause();
+
     }
+
+    Filter LoadFilter(){
+        JSONObject jsonObject = new JSONObject();
+        Filter mFltr = new FilterBuilder().build();
+        try{
+            FileInputStream fis = openFileInput(fileName);
+            ObjectInputStream is = new ObjectInputStream(fis);
+            jsonObject = (JSONObject) is.readObject();
+            mFltr.qParam = jsonObject.getInt("qParam");
+            mFltr.mOfferType = OfferType.values()[jsonObject.getInt("mOfferType")];
+            mFltr.mPricemin = jsonObject.getInt("mPricemin");
+            mFltr.mPricemax = jsonObject.getInt("mPricemax");
+            mFltr.mSizemin = jsonObject.getDouble("mSizemin");
+            mFltr.mSizemax = jsonObject.getDouble("mSizemax");
+            mFltr.mBalkon = jsonObject.getBoolean("mBalkon");
+            fis.close();
+            is.close();
+        } catch(Exception e){
+            e.printStackTrace();
+            Log.e(TAG, "Can't load filter from the file: " + e.getMessage());
+        }
+        return mFltr;
+    }
+
+
 
 }
 

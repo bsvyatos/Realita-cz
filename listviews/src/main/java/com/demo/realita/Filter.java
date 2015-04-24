@@ -3,6 +3,11 @@ package com.demo.realita;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 /**
  * Created by Svyatoslav on 07-Apr-15.
  */
@@ -62,6 +67,7 @@ public class Filter implements Parcelable{
             return new Filter[size];
         }
     };
+
 
 }
 
