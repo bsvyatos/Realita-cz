@@ -10,11 +10,12 @@ public class FilterBuilder {
     private double mSizemax = 1000;
     private boolean mBalkon = true;
     private String mOfferType = "Pronájem";
+    private int qParam = 0;
 
     public FilterBuilder(){ }
 
     public Filter build(){
-        return new Filter(mPricemin, mPricemax, mSizemin, mSizemax, mBalkon, mOfferType);
+        return new Filter(mPricemin, mPricemax, mSizemin, mSizemax, mBalkon, mOfferType, qParam);
     }
 
     public FilterBuilder priceMin(int mPricemin){
@@ -42,8 +43,13 @@ public class FilterBuilder {
         return this;
     }
 
-    public FilterBuilder Balkon(String mOfferType){
+    public FilterBuilder OfferType(String mOfferType){
         this.mOfferType = mOfferType;
+        return this;
+    }
+
+    public FilterBuilder qParam(int qParam){
+        this.qParam = qParam;
         return this;
     }
 }

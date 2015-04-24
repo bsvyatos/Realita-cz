@@ -45,6 +45,7 @@ public class FilterActivity extends Activity {
         sMax = (EditText) findViewById(R.id.size_max);
 
         bSave = (Button) findViewById(R.id.button_save);
+
         bSave.setOnClickListener(bHandler);
 
     }

@@ -49,7 +49,7 @@ public class BaseActivity extends Activity{
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
     private ArrayList<DrawerItem> navDrawerItems;
-    private Filter mFilter;
+        public Filter mFilter;
 
 
     protected void onCreateDrawer() {
@@ -134,35 +134,26 @@ public class BaseActivity extends Activity{
     }
 
     private void drawerHandler(int pos){
-        SharedPreferences mPrefs =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-        Gson gson =  new Gson();
-        String json = mPrefs.getString("mFilter", "");
-        mFilter = gson.fromJson(json, Filter.class);
-
         switch(pos){
             case 0:
+                mFilter.qParam = 0;
                 mFilter.mOfferType = "Prodej";
             case 1:
-                mFilter.mOfferType = "Pronájem";
+                mFilter.mOfferType = "Pronï¿½jem";
             case 2:
+                //sell
                 return;
             case 3:
-                return;
+                //favourite
+                mFilter.qParam = 2;
             case 4:
+                //Notifications
                 return;
             case 5:
+                //Sign/Log in
                 return;
         }
 
-        SharedPreferences.Editor prefsEditor = mPrefs.edit();
-        prefsEditor.clear();
-        json = gson.toJson(mFilter);
-        prefsEditor.putString("mFilter", json);
-        prefsEditor.commit();
-
-        finish();
-        startActivity(getIntent());
         return;
     }
 

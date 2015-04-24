@@ -28,14 +28,15 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
 
     Context mContext;
     int mLayoutResourceId;
+    //Object contains only the List itself, should be re-written
+    FavouriteArray FavArr;
 
-    public HouseItemAdapter(Context context, int resource) {
+    public HouseItemAdapter(Context context, int resource, FavouriteArray FavArr) {
         super(context, resource);
 
         this.mContext = context;
         this.mLayoutResourceId = resource;
-
-
+        this.FavArr = FavArr;
     }
 
     @Override
@@ -77,6 +78,7 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
         holder.imgButt.setOnClickListener(favButtonListener);
         Integer rowPosition = position;
         holder.imgView.setTag(rowPosition);
+        holder.imgButt.setTag(rowPosition);
 
         //setting the view to reflect the data we need to display
         holder.addrView.setText(houseItem.mAddress);
@@ -86,6 +88,11 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
         //for getting the image
         int resID = mContext.getResources().getIdentifier(houseItem.mImgPreview, "drawable", mContext.getPackageName());
         holder.imgView.setImageResource(resID);
+
+        //state of the start
+        if(FavArr.favList.contains(houseItem.Id)){
+            holder.imgButt.setSelected(true);
+        }
 
         //returning the row
         return row;
@@ -106,30 +113,22 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
         @Override
         public void onClick(View button) {
             button.setSelected(!button.isSelected());
-            //Creating a shared preference
-            SharedPreferences mPrefs =  PreferenceManager.getDefaultSharedPreferences(getContext());
-
-            //Retrieve Filter object from Shared Preferences if possible
-            Gson gson =  new Gson();
-            String json = mPrefs.getString("Favourites", "");
-            FavouriteArray FavArr = gson.fromJson(json, FavouriteArray.class);
-
-            if(FavArr == null){
-                List<String> fList = new ArrayList<String>();
-                FavArr = new FavouriteArray(fList);
-            }
 
             Integer viewPosition = (Integer) button.getTag();
             HouseItem p = getItem(viewPosition);
 
-            if(button.isSelected()){
+            if(!button.isSelected()){
                 FavArr.favList.add(p.Id);
             } else {
                 FavArr.favList.remove(p.Id);
             }
 
+            //Load Shared preferences and save new version of FavArr as "Favourites"
+            SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
             SharedPreferences.Editor prefsEditor = mPrefs.edit();
-            json = gson.toJson(FavArr);
+
+            Gson gson =  new Gson();
+            String json = gson.toJson(FavArr);
             prefsEditor.putString("Favourites", json);
             prefsEditor.commit();
 
