@@ -1,41 +1,29 @@
 package com.demo.realita;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.demo.realita.R;
 import com.google.gson.Gson;
-import com.microsoft.windowsazure.mobileservices.*;
-import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
-import com.microsoft.windowsazure.mobileservices.table.MobileServiceTable;
-import com.microsoft.windowsazure.mobileservices.table.TableOperationCallback;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.table.MobileServiceJsonTable;
 
-import org.json.JSONObject;
-
-import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.FileReader;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -249,15 +237,8 @@ public class ListViewActivity extends BaseActivity {
         Filter mFltr = new FilterBuilder().build();
         Gson gson = new Gson();
         try{
-            FileInputStream fis = openFileInput(fileName);
-            StringBuffer fileContent = new StringBuffer("");
-            byte[] buffer = new byte[1024];
-            int n;
-            while ((n = fis.read(buffer)) != -1){
-                fileContent.append(new String(buffer, 0, n));
-            }
-            mFltr = gson.fromJson(fileContent.toString(), Filter.class);
-            fis.close();
+            BufferedReader br = new BufferedReader(new FileReader(new File(getFilesDir(), fileName)));
+            mFltr = gson.fromJson(br, Filter.class);
         } catch(Exception e){
             Log.e(TAG, "Can't Load filter: " + e.getMessage());
         }
