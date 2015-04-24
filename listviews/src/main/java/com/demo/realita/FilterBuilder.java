@@ -9,9 +9,9 @@ public class FilterBuilder {
     private double mSizemin = 0;
     private double mSizemax = 1000;
     private boolean mBalkon = true;
-    private String mOfferType = "Pronájem";
+    private int mOfferType = OfferType.SALE.ordinal();
     private int qParam = 0;
-
+    
     public FilterBuilder(){ }
 
     public Filter build(){
@@ -43,11 +43,10 @@ public class FilterBuilder {
         return this;
     }
 
-    public FilterBuilder OfferType(String mOfferType){
+    public FilterBuilder OfferType(int mOfferType){
         this.mOfferType = mOfferType;
         return this;
     }
-
     public FilterBuilder qParam(int qParam){
         this.qParam = qParam;
         return this;

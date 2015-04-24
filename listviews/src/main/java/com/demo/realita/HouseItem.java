@@ -3,15 +3,33 @@ package com.demo.realita;
 import android.os.Parcelable;
 import android.os.Parcel;
 
+import com.google.gson.JsonElement;
+
 /**
  * Created by anonymous
  */
-public class HouseItem implements Parcelable {
 
+enum OfferType {
+    RENT("Pronájem"), SALE("Prodaz"), JOINT("Spolubydleni");
+
+    private final String text;
+
+    private OfferType(final String text) {
+        this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return text;
+    }
+}
+
+
+public class HouseItem implements Parcelable {
     public String Id;
     public String mAddress;
     // Sale or rent
-    public String mOfferType;
+    public OfferType mOfferType;
     // Sale or rent
     public String mPropertyType;
     // 2+1, etc
@@ -31,35 +49,32 @@ public class HouseItem implements Parcelable {
     public boolean mBalkony;
     public boolean mTerrace;
 
-    public HouseItem(String Id, String Address, String OfferType, String PropertyType, String Layout
-            , String Ownership, String EnergyType, String BuildingType, String Equipment
-            , String Description, double Size, int Price, int Fees, int Floor, int ZipCode
-            , String ImgPreview, String HouseInfo, boolean Balkony, boolean Terrace) {
-        this.Id = Id;
-        this.mAddress = Address;
-        this.mOfferType = OfferType;
-        this.mPropertyType = PropertyType;
-        this.mLayout = Layout;
-        this.mOwnership = Ownership;
-        this.mEnergyType = EnergyType;
-        this.mBuildingType = BuildingType;
-        this.mEquipment = Equipment;
-        this.mDescription = Description;
-        this.mSize = Size;
-        this.mPrice = Price;
-        this.mFees = Fees;
-        this.mFloor = Floor;
-        this.mZipCode = ZipCode;
-        this.mImgPreview = ImgPreview;
-        this.mHouseInfo = HouseInfo;
-        this.mBalkony = Balkony;
-        this.mTerrace = Terrace;
+    public HouseItem(JsonElement item) {
+        this.Id = item.getAsJsonObject().getAsJsonPrimitive("id").getAsString();
+        this.mAddress = item.getAsJsonObject().getAsJsonPrimitive("mAddress").getAsString();
+        this.mOfferType = OfferType.values()[item.getAsJsonObject().getAsJsonPrimitive("mOfferType1").getAsInt()];
+        this.mPropertyType = item.getAsJsonObject().getAsJsonPrimitive("mPropertyType").getAsString();
+        this.mLayout = item.getAsJsonObject().getAsJsonPrimitive("mLayout").getAsString();
+        this.mOwnership = item.getAsJsonObject().getAsJsonPrimitive("mOwnership").getAsString();
+        this.mEnergyType = item.getAsJsonObject().getAsJsonPrimitive("mEnergyType").getAsString();
+        this.mBuildingType = item.getAsJsonObject().getAsJsonPrimitive("mBuildingType").getAsString();
+        this.mEquipment = item.getAsJsonObject().getAsJsonPrimitive("mEquipment").getAsString();
+        this.mDescription = item.getAsJsonObject().getAsJsonPrimitive("mDescription").getAsString();
+        this.mSize = item.getAsJsonObject().getAsJsonPrimitive("mSize").getAsInt();
+        this.mPrice = item.getAsJsonObject().getAsJsonPrimitive("mPrice").getAsInt();
+        this.mFees = item.getAsJsonObject().getAsJsonPrimitive("mFees").getAsInt();
+        this.mFloor = item.getAsJsonObject().getAsJsonPrimitive("mFloor").getAsInt();
+        this.mZipCode = item.getAsJsonObject().getAsJsonPrimitive("mZipCode").getAsInt();
+        this.mImgPreview = item.getAsJsonObject().getAsJsonPrimitive("mImgPreview").getAsString();
+        this.mHouseInfo = item.getAsJsonObject().getAsJsonPrimitive("mHouseInfo").getAsString();
+        this.mBalkony = item.getAsJsonObject().getAsJsonPrimitive("mBalkony").getAsBoolean();
+        this.mTerrace = item.getAsJsonObject().getAsJsonPrimitive("mTerrace").getAsBoolean();
     }
 
     public HouseItem(Parcel in){
         this.Id = in.readString();
         this.mAddress = in.readString();
-        this.mOfferType = in.readString();
+        this.mOfferType = OfferType.values()[in.readInt()];
         this.mPropertyType = in.readString();
         this.mLayout = in.readString();
         this.mOwnership = in.readString();
@@ -88,7 +103,7 @@ public class HouseItem implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(Id);
         parcel.writeString(mAddress);
-        parcel.writeString(mOfferType);
+        parcel.writeInt(mOfferType.ordinal());
         parcel.writeString(mPropertyType);
         parcel.writeString(mLayout);
         parcel.writeString(mOwnership);

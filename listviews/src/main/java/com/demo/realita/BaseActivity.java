@@ -49,7 +49,7 @@ public class BaseActivity extends Activity{
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
     private ArrayList<DrawerItem> navDrawerItems;
-        public Filter mFilter;
+    public Filter mFilter;
 
 
     protected void onCreateDrawer() {
@@ -137,9 +137,9 @@ public class BaseActivity extends Activity{
         switch(pos){
             case 0:
                 mFilter.qParam = 0;
-                mFilter.mOfferType = "Prodej";
+                mFilter.mOfferType = OfferType.SALE;
             case 1:
-                mFilter.mOfferType = "Pron�jem";
+                mFilter.mOfferType = OfferType.RENT;
             case 2:
                 //sell
                 return;

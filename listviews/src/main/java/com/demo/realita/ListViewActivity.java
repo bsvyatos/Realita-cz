@@ -1,5 +1,6 @@
 package com.demo.realita;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,15 +8,25 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.demo.realita.R;
 import com.google.gson.Gson;
 import com.microsoft.windowsazure.mobileservices.*;
+import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
 import com.microsoft.windowsazure.mobileservices.table.MobileServiceTable;
+import com.microsoft.windowsazure.mobileservices.table.TableOperationCallback;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
+import com.microsoft.windowsazure.mobileservices.table.MobileServiceJsonTable;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -34,11 +45,10 @@ public class ListViewActivity extends BaseActivity {
 
     private ListView mListView;
     private HouseItemAdapter mHouseItemAdapter;
-    MobileServiceTable<HouseItem> mHouseTable;
+    MobileServiceJsonTable mHouseTable;
     String fileName = "mFile";
     FavouriteArray FavArr;
-
-
+    
     /*
     HouseItem newItem = new HouseItem("MyId007", "Kubelicetopkek 19", "Pronajem", "Byt", "3+1", "Osobni", "A", "N�zkoenergetick�"
             ,"Vybaven�", "Byt je za?�zen�; nov� kuchy?sk� linka a spor�k, sk?�n?, ledni?ka, kuchy?sk� st?l, postele, gau?\t"
@@ -83,6 +93,7 @@ public class ListViewActivity extends BaseActivity {
             fis.close();
         } catch (Exception e) {
             e.printStackTrace();
+            mFilter = new FilterBuilder().build();
         }
 
         mFilter.qParam = 0;
@@ -97,7 +108,7 @@ public class ListViewActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-        mHouseTable = mClient.getTable(HouseItem.class);
+        mHouseTable = mClient.getTable("HouseItem");
 
         if (mHouseTable == null) {
             Log.v("RealitaCz", "mHouseTalble was never received");
@@ -112,7 +123,7 @@ public class ListViewActivity extends BaseActivity {
         mHouseItemAdapter = new HouseItemAdapter(getApplicationContext(), R.layout.row, FavArr);
 
         showAll(mListView);
-        if (mListView != null) {
+        if(mListView != null){
             mListView.setAdapter(mHouseItemAdapter);
         }
 
@@ -125,11 +136,9 @@ public class ListViewActivity extends BaseActivity {
             }
         });
 
-
         if (savedInstanceState == null) {
             selectItem(0);
         }
-
 
         /*
         //push HouseItem
@@ -150,7 +159,7 @@ public class ListViewActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
+        
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.list_view, menu);
         return true;
@@ -162,7 +171,7 @@ public class ListViewActivity extends BaseActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-        switch (item.getItemId()) {
+        switch (item.getItemId()){
             case R.id.action_settings:
                 return true;
             case R.id.action_search:
@@ -183,38 +192,37 @@ public class ListViewActivity extends BaseActivity {
             protected Void doInBackground(Void... params) {
                 try {
 
+                final JsonElement result =
+                        mHouseTable.where().field("mBalkony").eq(mFilter.mBalkon)
+                        .and().field("mPrice").ge(mFilter.mPricemin)
+                        .and().field("mPrice").le(mFilter.mPricemax)
+                        .and().field("mSize").ge(mFilter.mSizemin)
+                        .and().field("mSize").le(mFilter.mSizemax)
+                .execute().get();
+                final JsonArray results = result.getAsJsonArray();
 
-                    final MobileServiceList<HouseItem> result;
-                    //query
-                    // .add().field("mOfferType").eq(mFilter.mOfferType) missing
-                    result = mHouseTable.where().field("mBalkony").eq(mFilter.mBalkon)
-                            .and().field("mPrice").ge(mFilter.mPricemin)
-                            .and().field("mPrice").le(mFilter.mPricemax)
-                            .and().field("mSize").ge(mFilter.mSizemin)
-                            .and().field("mSize").le(mFilter.mSizemax)
-                            .execute().get();
+                runOnUiThread(new Runnable() {
 
-                    runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            mHouseItemAdapter.clear();
-
-                            for (HouseItem item : result) {
-                                //This is terrible and it has no reason to be here This should be done in query instead
-                                if ((mFilter.qParam == 2 && FavArr.favList.contains(item.Id)) || mFilter.qParam < 2) {
-                                    mHouseItemAdapter.add(item);
-                                }
-                            }
-                            if(mFilter.qParam == 2 && result == null){
-                                //Favourites was pressed but there are currently no favourites, deal with it here
+                    @Override
+                    public void run() {
+                        mHouseItemAdapter.clear();
+                        for (JsonElement item : results) {
+                            //This is terrible and it has no reason to be here This should be done in query instead
+                            if ((mFilter.qParam == 2 &&
+                                    FavArr.favList.contains(item.getAsJsonObject().getAsJsonPrimitive("id").getAsString())) || mFilter.qParam < 2) {
+                                HouseItem house = new HouseItem(item);
+                                mHouseItemAdapter.add(house);
                             }
                         }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
+                        if(mFilter.qParam == 2 && result == null){
+                            //Favourites was pressed but there are currently no favourites, deal with it here
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
             }
         }.execute();
     }
@@ -233,5 +241,6 @@ public class ListViewActivity extends BaseActivity {
         }
         super.onPause();
     }
+
 }
 
