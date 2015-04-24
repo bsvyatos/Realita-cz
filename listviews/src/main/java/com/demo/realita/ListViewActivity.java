@@ -234,55 +234,32 @@ public class ListViewActivity extends BaseActivity {
     }//onActivityResult
 
     void SaveFilter(){
-
-        JSONObject jObject = new JSONObject();
-
-        try {
-            jObject.put("mPricemin", mFilter.mPricemin);
-            jObject.put("mPricemax", mFilter.mPricemax);
-            jObject.put("mSizemin", mFilter.mSizemin);
-            jObject.put("mSizemax", mFilter.mSizemax);
-            jObject.put("mBalkon", mFilter.mBalkon);
-            jObject.put("mOfferType", mFilter.mOfferType.ordinal());
-            jObject.put("qParam", mFilter.qParam);
-        } catch(Exception e){
-            e.printStackTrace();
-            Log.e(TAG, "Can't initialize JSONObject: " + e.getMessage());
-        }
-
+        Gson gson = new Gson();
+        String json = gson.toJson(mFilter);
         try {
             FileOutputStream fos = openFileOutput(fileName, Context.MODE_PRIVATE);
-            ObjectOutputStream os = new ObjectOutputStream(fos);
-            os.writeObject(jObject);
-            os.close();
+            fos.write(json.getBytes());
             fos.close();
-
         } catch(Exception e){
-            e.printStackTrace();
-            Log.e(TAG, "Can't save filter to file: " + e.getMessage());
+            Log.e(TAG, "Can't save Filter to file: " + e.getMessage());
         }
-
     }
 
     Filter LoadFilter(){
-        JSONObject jsonObject = new JSONObject();
         Filter mFltr = new FilterBuilder().build();
+        Gson gson = new Gson();
         try{
             FileInputStream fis = openFileInput(fileName);
-            ObjectInputStream is = new ObjectInputStream(fis);
-            jsonObject = (JSONObject) is.readObject();
-            mFltr.qParam = jsonObject.getInt("qParam");
-            mFltr.mOfferType = OfferType.values()[jsonObject.getInt("mOfferType")];
-            mFltr.mPricemin = jsonObject.getInt("mPricemin");
-            mFltr.mPricemax = jsonObject.getInt("mPricemax");
-            mFltr.mSizemin = jsonObject.getDouble("mSizemin");
-            mFltr.mSizemax = jsonObject.getDouble("mSizemax");
-            mFltr.mBalkon = jsonObject.getBoolean("mBalkon");
+            StringBuffer fileContent = new StringBuffer("");
+            byte[] buffer = new byte[1024];
+            int n;
+            while ((n = fis.read(buffer)) != -1){
+                fileContent.append(new String(buffer, 0, n));
+            }
+            mFltr = gson.fromJson(fileContent.toString(), Filter.class);
             fis.close();
-            is.close();
         } catch(Exception e){
-            e.printStackTrace();
-            Log.e(TAG, "Can't load filter from the file: " + e.getMessage());
+            Log.e(TAG, "Can't Load filter: " + e.getMessage());
         }
         return mFltr;
     }
