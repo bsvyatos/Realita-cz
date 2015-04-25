@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -93,6 +94,7 @@ public class ListViewActivity extends BaseActivity {
         setContentView(R.layout.main_layout);
         super.onCreateDrawer();
 
+        SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
         mListView = (ListView) findViewById(R.id.myListView);
 
         mHouseItemAdapter = new HouseItemAdapter(getApplicationContext(), R.layout.row, FavArr);
