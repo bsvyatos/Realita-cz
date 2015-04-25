@@ -214,6 +214,9 @@ public class ListViewActivity extends BaseActivity {
         if (requestCode == 1) {
             if(resultCode == RESULT_OK){
                 mFilter = data.getExtras().getParcelable("Filter");
+                SaveFilter();
+                finish();
+                startActivity(getIntent());
             }
             if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(getBaseContext(), "Your Settings were not saved", Toast.LENGTH_LONG).show();
