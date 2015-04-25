@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -96,7 +97,6 @@ public class ListViewActivity extends BaseActivity {
         mListView = (ListView) findViewById(R.id.myListView);
 
         mHouseItemAdapter = new HouseItemAdapter(getApplicationContext(), R.layout.row, FavArr);
-
         showAll(mListView);
         if(mListView != null){
             mListView.setAdapter(mHouseItemAdapter);
@@ -189,6 +189,10 @@ public class ListViewActivity extends BaseActivity {
                                 mHouseItemAdapter.add(house);
                             }
                         }
+                        //set text view for houses' count
+                        TextView numbHouses = (TextView) findViewById(R.id.HousesText);
+                        numbHouses.setText("Houses: " + mHouseItemAdapter.getCount());
+
                         if(mFilter.qParam == 2 && result == null){
                             //Favourites was pressed but there are currently no favourites, deal with it here
                         }

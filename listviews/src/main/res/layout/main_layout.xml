@@ -20,6 +20,7 @@
             android:weightSum="20"
             android:background="#DDDDDD">
             <TextView
+                android:id="@+id/HousesText"
                 android:text="Houses:"
                 android:textSize="30dp"
                 android:background="#111111"
