@@ -9,11 +9,19 @@
     android:layout_marginTop="5dp"
     android:textAppearance="?android:attr/textAppearanceMedium"
     android:textColor="#c0c0c0"
-    android:text="Description"/>
+    android:text="Price Range"/>
     <View
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:background="#c0c0c0"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#c0c0c0"
+        android:text="Minimum Price"/>
 
     <EditText
         android:id="@+id/price_min"
@@ -22,6 +30,14 @@
         android:hint="Minimum Price"
         android:inputType="number"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#c0c0c0"
+        android:text="Maximum Price"/>
+
     <EditText
         android:id="@+id/price_max"
         android:layout_width="fill_parent"
@@ -29,12 +45,29 @@
         android:hint="Maximum Price"
         android:inputType="number"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#c0c0c0"
+        android:text="Minimum Size"/>
+
     <EditText
         android:id="@+id/size_min"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="Minimum Size"
         android:inputType="number"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#c0c0c0"
+        android:text="Maximum Size"/>
+
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"

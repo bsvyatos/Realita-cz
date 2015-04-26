@@ -38,12 +38,16 @@ public class FilterActivity extends Activity {
         mFilter = intent.getExtras().getParcelable("mFilter");
 
         pMin = (EditText) findViewById(R.id.price_min);
+        pMin.setHint(Integer.toString(mFilter.mPricemin));
 
         pMax = (EditText) findViewById(R.id.price_max);
+        pMax.setHint(Integer.toString(mFilter.mPricemax));
 
         sMin = (EditText) findViewById(R.id.size_min);
+        sMin.setHint(Double.toString(mFilter.mSizemin));
 
         sMax = (EditText) findViewById(R.id.size_max);
+        sMax.setHint(Double.toString(mFilter.mSizemax));
 
         bSave = (Button) findViewById(R.id.button_save);
 
