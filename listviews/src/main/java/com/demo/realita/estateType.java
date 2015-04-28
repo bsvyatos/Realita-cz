@@ -1,6 +1,6 @@
 package com.demo.realita;
 
-public enum estateType {
+public enum EstateType {
     byt,
     dum,
     pozemek,
