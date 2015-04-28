@@ -1,13 +1,11 @@
 package com.demo.realita;
 
-public enum EstateType {
-    byt,
-    dum,
-    pozemek,
-    garaz,
-    kancelar,
-    nebytovy,
-    rekreacni;
+public enum ConstructionType {
+    brick,
+    wood,
+    lowenergy,
+    prefab,
+    rest;
 
     private String text = "";
 
