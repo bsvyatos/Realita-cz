@@ -9,7 +9,7 @@
     <string-array name="sliding_menu_list">
         <item>Buy</item>
         <item>Rent</item>
-        <item>Sell</item>
+        <item>Roommate</item>
         <item>Favourite</item>
         <item>Notifications</item>
         <item>Sing/Log in</item>
@@ -30,9 +30,56 @@
     <!-- Text Fields -->
     <string name="button_save">Save</string>
 
+    <string-array name="OfferType">
+        <item>Buy</item>
+        <item>Rent</item>
+        <item>Roommate</item>
+    </string-array>
 
+    <string-array name="Disposition">
+        <item>1</item>
+        <item>1+kk</item>
+        <item>1+1</item>
+        <item>2+kk</item>
+        <item>2+1</item>
+        <item>3+kk</item>
+        <item>3+1</item>
+        <item>4+kk</item>
+        <item>4+1</item>
+        <item>5+kk</item>
+        <item>5+1</item>
+        <item>6+kk</item>
+        <item>6+1</item>
+        <item>7+kk</item>
+        <item>7+1</item>
+    </string-array>
 
+    <string-array name="EstateType">
+        <item>Byt</item>
+        <item>Dům</item>
+        <item>Pozemek</item>
+        <item>Garáž</item>
+        <item>Kancelář</item>
+        <item>Nebytový prostor</item>
+        <item>Rekreační objekt</item>
+    </string-array>
 
+    <string-array name="Ownership">
+        <item>Osobní</item>
+        <item>Podílové</item>
+        <item>Družstevní</item>
+        <item>Nájemní</item>
+        <item>Obecní</item>
+    </string-array>
 
+    <string-array name="Construction">
+        <item>Cihla</item>
+        <item>Ostatní</item>
+    </string-array>
+
+    <string-array name="Equipment">
+        <item>Vybavený</item>
+        <item>Částečně</item>
+    </string-array>
 
 </resources>

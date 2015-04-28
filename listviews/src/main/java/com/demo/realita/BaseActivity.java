@@ -1,37 +1,25 @@
 package com.demo.realita;
 
 import android.app.Activity;
-
-import java.util.ArrayList;
-import java.util.Locale;
-
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.SearchManager;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.google.gson.Gson;
+import java.util.ArrayList;
 
 /**
  * Created by Svyatoslav on 30-Mar-15.
@@ -50,9 +38,34 @@ public class BaseActivity extends Activity{
     private TypedArray navMenuIcons;
     private ArrayList<DrawerItem> navDrawerItems;
     public Filter mFilter;
+    public String[] HDispositions;
+    public String[] HEstateType;
+    public String[] HOwnership;
+    public String[] HConstruction;
+    public String[] HEquipment;
 
+    private void setEnums() {
+        String[] mItems = getResources().getStringArray(R.array.OfferType);
+        int i = 0;
+        for (OfferType n : OfferType.values()) {
+            n.setString(mItems[i++]);
+        }
+
+        mItems = getResources().getStringArray(R.array.EstateType);
+        i = 0;
+        for (estateType n : estateType.values()) {
+            n.setString(mItems[i++]);
+        }
+
+        HDispositions = getResources().getStringArray(R.array.Disposition);
+        HEstateType = getResources().getStringArray(R.array.EstateType);
+        HOwnership = getResources().getStringArray(R.array.Ownership);
+        HConstruction = getResources().getStringArray(R.array.Construction);
+        HEquipment = getResources().getStringArray(R.array.Equipment);
+    }
 
     protected void onCreateDrawer() {
+        setEnums();
         mTitle = mDrawerTitle = getTitle();
         mItemTitles = getResources().getStringArray(R.array.sliding_menu_list);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

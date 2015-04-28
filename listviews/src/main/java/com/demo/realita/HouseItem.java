@@ -4,25 +4,7 @@ import android.os.Parcelable;
 import android.os.Parcel;
 
 import com.google.gson.JsonElement;
-
-/**
- * Created by anonymous
- */
-
-enum OfferType {
-    RENT("Pronájem"), SALE("Prodaz"), JOINT("Spolubydleni");
-
-    private final String text;
-
-    private OfferType(final String text) {
-        this.text = text;
-    }
-
-    @Override
-    public String toString() {
-        return text;
-    }
-}
+import com.google.gson.JsonNull;
 
 
 public class HouseItem implements Parcelable {
@@ -52,23 +34,39 @@ public class HouseItem implements Parcelable {
     public HouseItem(JsonElement item) {
         this.Id = item.getAsJsonObject().getAsJsonPrimitive("id").getAsString();
         this.mAddress = item.getAsJsonObject().getAsJsonPrimitive("mAddress").getAsString();
-        this.mOfferType = OfferType.values()[item.getAsJsonObject().getAsJsonPrimitive("mOfferType1").getAsInt()];
-        this.mPropertyType = item.getAsJsonObject().getAsJsonPrimitive("mPropertyType").getAsString();
-        this.mLayout = item.getAsJsonObject().getAsJsonPrimitive("mLayout").getAsString();
-        this.mOwnership = item.getAsJsonObject().getAsJsonPrimitive("mOwnership").getAsString();
-        this.mEnergyType = item.getAsJsonObject().getAsJsonPrimitive("mEnergyType").getAsString();
-        this.mBuildingType = item.getAsJsonObject().getAsJsonPrimitive("mBuildingType").getAsString();
-        this.mEquipment = item.getAsJsonObject().getAsJsonPrimitive("mEquipment").getAsString();
-        this.mDescription = item.getAsJsonObject().getAsJsonPrimitive("mDescription").getAsString();
-        this.mSize = item.getAsJsonObject().getAsJsonPrimitive("mSize").getAsInt();
-        this.mPrice = item.getAsJsonObject().getAsJsonPrimitive("mPrice").getAsInt();
-        this.mFees = item.getAsJsonObject().getAsJsonPrimitive("mFees").getAsInt();
-        this.mFloor = item.getAsJsonObject().getAsJsonPrimitive("mFloor").getAsInt();
-        this.mZipCode = item.getAsJsonObject().getAsJsonPrimitive("mZipCode").getAsInt();
-        this.mImgPreview = item.getAsJsonObject().getAsJsonPrimitive("mImgPreview").getAsString();
-        this.mHouseInfo = item.getAsJsonObject().getAsJsonPrimitive("mHouseInfo").getAsString();
-        this.mBalkony = item.getAsJsonObject().getAsJsonPrimitive("mBalkony").getAsBoolean();
-        this.mTerrace = item.getAsJsonObject().getAsJsonPrimitive("mTerrace").getAsBoolean();
+        if (!(item.getAsJsonObject().get("mOfferType1") instanceof JsonNull))
+            this.mOfferType = OfferType.values()[item.getAsJsonObject().getAsJsonPrimitive("mOfferType1").getAsInt()];
+        if (!(item.getAsJsonObject().get("mPropertyType") instanceof JsonNull))
+            this.mPropertyType = item.getAsJsonObject().getAsJsonPrimitive("mPropertyType").getAsString();
+        if (!(item.getAsJsonObject().get("mLayout") instanceof JsonNull))
+            this.mLayout = item.getAsJsonObject().getAsJsonPrimitive("mLayout").getAsString();
+        if (!(item.getAsJsonObject().get("mOwnership") instanceof JsonNull))
+            this.mOwnership = item.getAsJsonObject().getAsJsonPrimitive("mOwnership").getAsString();
+        if (!(item.getAsJsonObject().get("mEnergyType") instanceof JsonNull))
+            this.mEnergyType = item.getAsJsonObject().getAsJsonPrimitive("mEnergyType").getAsString();
+        if (!(item.getAsJsonObject().get("mBuildingType") instanceof JsonNull))
+            this.mBuildingType = item.getAsJsonObject().getAsJsonPrimitive("mBuildingType").getAsString();
+        if (!(item.getAsJsonObject().get("mEquipment") instanceof JsonNull))
+            this.mEquipment = item.getAsJsonObject().getAsJsonPrimitive("mEquipment").getAsString();
+        if (!(item.getAsJsonObject().get("mDescription") instanceof JsonNull))
+            this.mDescription = item.getAsJsonObject().getAsJsonPrimitive("mDescription").getAsString();
+        if (!(item.getAsJsonObject().get("mSize") instanceof JsonNull))
+            this.mSize = item.getAsJsonObject().getAsJsonPrimitive("mSize").getAsInt();
+        if (!(item.getAsJsonObject().get("mPrice") instanceof JsonNull))
+            this.mPrice = item.getAsJsonObject().getAsJsonPrimitive("mPrice").getAsInt();
+        if (!(item.getAsJsonObject().get("mFees") instanceof JsonNull))
+            this.mFees = item.getAsJsonObject().getAsJsonPrimitive("mFees").getAsInt();
+        if (!(item.getAsJsonObject().get("mFloor") instanceof JsonNull))
+            this.mFloor = item.getAsJsonObject().getAsJsonPrimitive("mFloor").getAsInt();
+        if (!(item.getAsJsonObject().get("mZipCode") instanceof JsonNull))
+            this.mZipCode = item.getAsJsonObject().getAsJsonPrimitive("mZipCode").getAsInt();
+        if (!(item.getAsJsonObject().get("mImgPreview") instanceof JsonNull))
+            this.mImgPreview = item.getAsJsonObject().getAsJsonPrimitive("mImgPreview").getAsString();
+        //this.mHouseInfo = item.getAsJsonObject().getAsJsonPrimitive("mHouseInfo").getAsString();
+        if (!(item.getAsJsonObject().get("mBalkony") instanceof JsonNull))
+            this.mBalkony = item.getAsJsonObject().getAsJsonPrimitive("mBalkony").getAsBoolean();
+        if (!(item.getAsJsonObject().get("mTerrace") instanceof JsonNull))
+            this.mTerrace = item.getAsJsonObject().getAsJsonPrimitive("mTerrace").getAsBoolean();
     }
 
     public HouseItem(Parcel in){
