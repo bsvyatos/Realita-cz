@@ -70,16 +70,21 @@
         <item>Družstevní</item>
         <item>Nájemní</item>
         <item>Obecní</item>
+        <item>Ostatní</item>
     </string-array>
 
     <string-array name="Construction">
         <item>Cihla</item>
+        <item>Dřevostavba</item>
+        <item>Nízkoenergetický</item>
+        <item>Panel</item>
         <item>Ostatní</item>
     </string-array>
 
     <string-array name="Equipment">
-        <item>Vybavený</item>
+        <item>Nevybavený</item>
         <item>Částečně</item>
+        <item>Vybavený</item>
     </string-array>
 
 </resources>
