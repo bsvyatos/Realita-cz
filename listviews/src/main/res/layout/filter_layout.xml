@@ -3,6 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
+
+    <com.demo.realita.CustomAutoCompleteTextView
+        android:id="@+id/atv_places"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:hint="Type Address here" />
+
     <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -15,35 +23,75 @@
         android:layout_height="2dp"
         android:background="#c0c0c0"/>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/MinPriceButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#c0c0c0"
-        android:text="Minimum Price"/>
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="From:"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <TextView
+            android:id="@+id/min_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100 000 Kc"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_action_next_item"
+            />
 
-    <EditText
-        android:id="@+id/price_min"
+    </LinearLayout>
+
+    <View
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="Minimum Price"
-        android:inputType="number"/>
+        android:layout_height="1dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:background="#c0c0c0"/>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/MaxPriceButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#c0c0c0"
-        android:text="Maximum Price"/>
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To:"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <TextView
+            android:id="@+id/max_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="100 000 Kc"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_action_next_item"
+            />
 
-    <EditText
-        android:id="@+id/price_max"
+    </LinearLayout>
+
+    <View
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="Maximum Price"
-        android:inputType="number"/>
+        android:layout_height="2dp"
+        android:background="#c0c0c0"/>
 
     <TextView
         android:layout_width="wrap_content"
