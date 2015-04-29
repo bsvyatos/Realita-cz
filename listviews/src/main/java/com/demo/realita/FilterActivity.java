@@ -229,7 +229,7 @@ public class FilterActivity extends FragmentActivity
             String data = "";
 
             // Obtain browser key from https://code.google.com/apis/console
-            String key = "key=YOUR_API_KEY";
+            String key = "key=AIzaSyADYd0Jn7KEJI2mTMjDe1UAcrsQS1gbkII";
 
             String input="";
 
