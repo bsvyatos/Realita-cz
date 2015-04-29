@@ -1,13 +1,9 @@
 package com.demo.realita;
 
-public enum EstateType {
-    byt,
-    dum,
-    pozemek,
-    garaz,
-    kancelar,
-    nebytovy,
-    rekreacni;
+public enum EquipmentType {
+    unequipped,
+    partly,
+    equipped;
 
     private String text = "";
 
@@ -19,4 +15,3 @@ public enum EstateType {
         return text;
     }
 }
-

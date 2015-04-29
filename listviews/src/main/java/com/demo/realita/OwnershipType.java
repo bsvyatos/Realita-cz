@@ -1,13 +1,12 @@
 package com.demo.realita;
 
-public enum EstateType {
-    byt,
-    dum,
-    pozemek,
-    garaz,
-    kancelar,
-    nebytovy,
-    rekreacni;
+public enum OwnershipType {
+    personal,
+    mutual,
+    cooperative,
+    lease,
+    municipal,
+    rest;
 
     private String text = "";
 

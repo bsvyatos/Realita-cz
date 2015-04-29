@@ -53,7 +53,7 @@ public class BaseActivity extends Activity{
 
         mItems = getResources().getStringArray(R.array.EstateType);
         i = 0;
-        for (estateType n : estateType.values()) {
+        for (EstateType n : EstateType.values()) {
             n.setString(mItems[i++]);
         }
 
