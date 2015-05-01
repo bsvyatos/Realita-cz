@@ -19,6 +19,8 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.places.AutocompleteFilter;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -46,6 +48,7 @@ public class FilterActivity extends FragmentActivity
     PlacesTask placesTask;
     ParserTask parserTask;
     private static final String TAG = ListViewActivity.class.getName();
+    AutocompleteFilter mAutoFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,7 +232,7 @@ public class FilterActivity extends FragmentActivity
             String data = "";
 
             // Obtain browser key from https://code.google.com/apis/console
-            String key = "key=AIzaSyADYd0Jn7KEJI2mTMjDe1UAcrsQS1gbkII";
+            String key = "key=" + R.string.password;
 
             String input="";
 

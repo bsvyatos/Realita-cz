@@ -15,6 +15,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.GeoDataApi;
+import com.google.android.gms.location.places.Places;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -29,12 +32,13 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.android.gms.location.*;
 
 public class ListViewActivity extends BaseActivity {
 
     //Azure mobile service instance
     private MobileServiceClient mClient;
-
+    private GoogleApiClient mGoogleApiClient;
     private ListView mListView;
     private HouseItemAdapter mHouseItemAdapter;
     MobileServiceJsonTable mHouseTable;
@@ -42,12 +46,6 @@ public class ListViewActivity extends BaseActivity {
     FavouriteArray FavArr;
     private static final String TAG = ListViewActivity.class.getName();
     
-    /*
-    HouseItem newItem = new HouseItem("MyId007", "Kubelicetopkek 19", "Pronajem", "Byt", "3+1", "Osobni", "A", "N�zkoenergetick�"
-            ,"Vybaven�", "Byt je za?�zen�; nov� kuchy?sk� linka a spor�k, sk?�n?, ledni?ka, kuchy?sk� st?l, postele, gau?\t"
-            ,70, 4000000, 2500, 3, 15000, "wut?", "Info goes here, sometimes", false, false);
-    */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //get FavArr from shared preferences
@@ -59,6 +57,12 @@ public class ListViewActivity extends BaseActivity {
             List<String> fList = new ArrayList<String>();
             FavArr = new FavouriteArray(fList);
         }
+
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .setAccountName("")
+                .build();
 
         //First time application is started code
         if (!mPrefs.getBoolean("firstTime", false)) {
@@ -115,21 +119,6 @@ public class ListViewActivity extends BaseActivity {
             selectItem(0);
         }
 
-        /*
-        //push HouseItem
-        mHouseTable.insert(newItem, new TableOperationCallback<HouseItem>() {
-            @Override
-            public void onCompleted(HouseItem entity, Exception exception, ServiceFilterResponse response) {
-                if(exception == null){
-                    //Insert succeeded;
-                    Toast.makeText(getBaseContext(), "Successfuly added the item", Toast.LENGTH_LONG);
-                } else {
-                    //Insert failed;
-                    Toast.makeText(getBaseContext(), "Failed to added the item", Toast.LENGTH_LONG);
-                }
-            }
-        });
-        */
     }
 
     @Override
@@ -252,6 +241,17 @@ public class ListViewActivity extends BaseActivity {
         return mFltr;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
 
 
 }

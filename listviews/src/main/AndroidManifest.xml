@@ -36,6 +36,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ListViewActivity" />
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.AIzaSyADYd0Jn7KEJI2mTMjDe1UAcrsQS1gbkII"
+            android:value="AIzaSyADYd0Jn7KEJI2mTMjDe1UAcrsQS1gbkII"
+            />
     </application>
 
 </manifest>
