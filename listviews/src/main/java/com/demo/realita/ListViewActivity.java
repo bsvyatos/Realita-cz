@@ -80,8 +80,8 @@ public class ListViewActivity extends BaseActivity {
 
         try {
             mClient = new MobileServiceClient(
-                    "https://realita-cz-demo.azure-mobile.net/",
-                    "xEcspiKVLSUEJJaPRBEJnElbiQluGx23",
+                    ConnectValues.AZUREMOBILEURL.toString(),
+                    ConnectValues.AZUREMOBILEPWD.toString(),
                     this
             );
         } catch (MalformedURLException e) {
