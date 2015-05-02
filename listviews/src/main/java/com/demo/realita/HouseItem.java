@@ -15,11 +15,11 @@ public class HouseItem implements Parcelable {
     // Sale or rent
     public EstateType mPropertyType;
     // 2+1, etc
-    public String mLayout;
-    public String mOwnership;
+    public int mLayout;
+    public int mOwnership;
     public String mEnergyType;
-    public String mBuildingType;
-    public String mEquipment;
+    public int mBuildingType;
+    public int mEquipment;
     public String mDescription;
     public double mSize;
     public int mPrice;
@@ -34,22 +34,22 @@ public class HouseItem implements Parcelable {
     public HouseItem(JsonElement item) {
         this.Id = item.getAsJsonObject().getAsJsonPrimitive("id").getAsString();
         this.mAddress = item.getAsJsonObject().getAsJsonPrimitive("mAddress").getAsString();
-        if (!(item.getAsJsonObject().get("mOfferType1") instanceof JsonNull))
-            this.mOfferType = OfferType.values()[item.getAsJsonObject().getAsJsonPrimitive("mOfferType1").getAsInt()];
-        if (!(item.getAsJsonObject().get("mPropertyType1") instanceof JsonNull))
-            this.mPropertyType = EstateType.values()[item.getAsJsonObject().getAsJsonPrimitive("mPropertyType1").getAsInt()];
+        if (!(item.getAsJsonObject().get("mOfferType") instanceof JsonNull))
+            this.mOfferType = OfferType.values()[item.getAsJsonObject().getAsJsonPrimitive("mOfferType").getAsInt()];
+        if (!(item.getAsJsonObject().get("mPropertyType") instanceof JsonNull))
+            this.mPropertyType = EstateType.values()[item.getAsJsonObject().getAsJsonPrimitive("mPropertyType").getAsInt()];
         else
             this.mPropertyType = EstateType.values()[0];
         if (!(item.getAsJsonObject().get("mLayout") instanceof JsonNull))
-            this.mLayout = item.getAsJsonObject().getAsJsonPrimitive("mLayout").getAsString();
+            this.mLayout = item.getAsJsonObject().getAsJsonPrimitive("mLayout").getAsInt();
         if (!(item.getAsJsonObject().get("mOwnership") instanceof JsonNull))
-            this.mOwnership = item.getAsJsonObject().getAsJsonPrimitive("mOwnership").getAsString();
+            this.mOwnership = item.getAsJsonObject().getAsJsonPrimitive("mOwnership").getAsInt();
         if (!(item.getAsJsonObject().get("mEnergyType") instanceof JsonNull))
             this.mEnergyType = item.getAsJsonObject().getAsJsonPrimitive("mEnergyType").getAsString();
         if (!(item.getAsJsonObject().get("mBuildingType") instanceof JsonNull))
-            this.mBuildingType = item.getAsJsonObject().getAsJsonPrimitive("mBuildingType").getAsString();
+            this.mBuildingType = item.getAsJsonObject().getAsJsonPrimitive("mBuildingType").getAsInt();
         if (!(item.getAsJsonObject().get("mEquipment") instanceof JsonNull))
-            this.mEquipment = item.getAsJsonObject().getAsJsonPrimitive("mEquipment").getAsString();
+            this.mEquipment = item.getAsJsonObject().getAsJsonPrimitive("mEquipment").getAsInt();
         if (!(item.getAsJsonObject().get("mDescription") instanceof JsonNull))
             this.mDescription = item.getAsJsonObject().getAsJsonPrimitive("mDescription").getAsString();
         if (!(item.getAsJsonObject().get("mSize") instanceof JsonNull))
@@ -76,11 +76,11 @@ public class HouseItem implements Parcelable {
         this.mAddress = in.readString();
         this.mOfferType = OfferType.values()[in.readInt()];
         this.mPropertyType = EstateType.values()[in.readInt()];
-        this.mLayout = in.readString();
-        this.mOwnership = in.readString();
+        this.mLayout = in.readInt();
+        this.mOwnership = in.readInt();
         this.mEnergyType = in.readString();
-        this.mBuildingType = in.readString();
-        this.mEquipment = in.readString();
+        this.mBuildingType = in.readInt();
+        this.mEquipment = in.readInt();
         this.mDescription = in.readString();
         this.mSize = in.readDouble();
         this.mPrice = in.readInt();
@@ -105,11 +105,11 @@ public class HouseItem implements Parcelable {
         parcel.writeString(mAddress);
         parcel.writeInt(mOfferType.ordinal());
         parcel.writeInt(mPropertyType.ordinal());
-        parcel.writeString(mLayout);
-        parcel.writeString(mOwnership);
+        parcel.writeInt(mLayout);
+        parcel.writeInt(mOwnership);
         parcel.writeString(mEnergyType);
-        parcel.writeString(mBuildingType);
-        parcel.writeString(mEquipment);
+        parcel.writeInt(mBuildingType);
+        parcel.writeInt(mEquipment);
         parcel.writeString(mDescription);
         parcel.writeDouble(mSize);
         parcel.writeInt(mPrice);
