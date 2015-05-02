@@ -54,8 +54,12 @@ public class FilterActivity extends FragmentActivity
 
     private AutoCompleteTextView mAutocompleteView;
 
-    private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
-            new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
+    private static final String[] COUNTRIES = new String[] {
+            "Czech", "Slovakia"
+    };
+
+    private static final LatLngBounds BOUNDS_CZ_SK = new LatLngBounds(
+            new LatLng(48.567424, 12.006364), new LatLng(50.0276543, 22.553239));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +82,15 @@ public class FilterActivity extends FragmentActivity
         // Register a listener that receives callbacks when a suggestion has been selected
         mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
 
+        //PlaceTypes has a bug and can't be used at the moment
+        //Set<Integer> cz_places = new HashSet<Integer>(Arrays.asList(Place.TYPE_ADMINISTRATIVE_AREA_LEVEL_1));
+        //Set<Integer> cz_places = PlaceTypes.ALL;
+        //AutocompleteFilter cz_filter = AutocompleteFilter.create(cz_places);
+
         // Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
         // the entire world.
         mAdapter = new PlaceAutocompleteAdapter(this, android.R.layout.simple_list_item_1,
-                BOUNDS_GREATER_SYDNEY, null);
+                BOUNDS_CZ_SK, null);
         mAutocompleteView.setAdapter(mAdapter);
 
         setText(R.id.min_price, Integer.toString(mFilter.mPricemin) + " K?");
