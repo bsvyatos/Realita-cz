@@ -3,6 +3,7 @@
     package="com.demo.realita" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
 
     <application
         android:allowBackup="true"
@@ -38,7 +39,7 @@
         </activity>
 
         <meta-data
-            android:name="com.google.android.geo.AIzaSyADYd0Jn7KEJI2mTMjDe1UAcrsQS1gbkII"
+            android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyADYd0Jn7KEJI2mTMjDe1UAcrsQS1gbkII"
             />
     </application>

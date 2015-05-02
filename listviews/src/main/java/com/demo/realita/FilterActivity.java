@@ -1,62 +1,82 @@
 package com.demo.realita;
 
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.location.places.AutocompleteFilter;
-
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.List;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 
 /**
  * Created by Svyatoslav on 08-Apr-15.
  */
 public class FilterActivity extends FragmentActivity
-        implements FilterDialogFragment.NoticeDialogListener{
+        implements FilterDialogFragment.NoticeDialogListener
+        ,GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks{
     Button bSave;
     Filter mFilter;
     EditText sMin;
     EditText sMax;
-    AutoCompleteTextView atvPlaces;
-    PlacesTask placesTask;
-    ParserTask parserTask;
+
     private static final String TAG = ListViewActivity.class.getName();
-    AutocompleteFilter mAutoFilter;
+
+    protected GoogleApiClient mGoogleApiClient;
+
+    private PlaceAutocompleteAdapter mAdapter;
+
+    private AutoCompleteTextView mAutocompleteView;
+
+    private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
+            new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Set up the Google API Client if it has not been initialised yet.
+        if (mGoogleApiClient == null) {
+            rebuildGoogleApiClient();
+        }
+
         setContentView(R.layout.filter_layout);
 
         Intent intent = getIntent();
         mFilter = intent.getExtras().getParcelable("mFilter");
+
+        // Retrieve the AutoCompleteTextView that will display Place suggestions.
+        mAutocompleteView = (AutoCompleteTextView)
+                findViewById(R.id.autocomplete_places);
+
+        // Register a listener that receives callbacks when a suggestion has been selected
+        mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
+
+        // Set up the adapter that will retrieve suggestions from the Places Geo Data API that cover
+        // the entire world.
+        mAdapter = new PlaceAutocompleteAdapter(this, android.R.layout.simple_list_item_1,
+                BOUNDS_GREATER_SYDNEY, null);
+        mAutocompleteView.setAdapter(mAdapter);
 
         setText(R.id.min_price, Integer.toString(mFilter.mPricemin) + " K?");
         LinearLayout pMinLayout = (LinearLayout) findViewById(R.id.MinPriceButton);
@@ -75,29 +95,6 @@ public class FilterActivity extends FragmentActivity
         bSave = (Button) findViewById(R.id.button_save);
 
         bSave.setOnClickListener(bHandler);
-
-        atvPlaces = (AutoCompleteTextView) findViewById(R.id.atv_places);
-        atvPlaces.setThreshold(1);
-
-        atvPlaces.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                placesTask = new PlacesTask();
-                placesTask.execute(s.toString());
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                // TODO Auto-generated method stub
-            }
-        });
 
         Intent returnIntent = new Intent();
         setResult(RESULT_CANCELED, returnIntent);
@@ -135,6 +132,95 @@ public class FilterActivity extends FragmentActivity
         }
     };
 
+    /**
+     * Listener that handles selections from suggestions from the AutoCompleteTextView that
+     * displays Place suggestions.
+     * Gets the place id of the selected item and issues a request to the Places Geo Data API
+     * to retrieve more details about the place.
+     *
+     * @see com.google.android.gms.location.places.GeoDataApi#getPlaceById(com.google.android.gms.common.api.GoogleApiClient,
+     * String...)
+     */
+    private AdapterView.OnItemClickListener mAutocompleteClickListener
+            = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            /*
+             Retrieve the place ID of the selected item from the Adapter.
+             The adapter stores each Place suggestion in a PlaceAutocomplete object from which we
+             read the place ID.
+              */
+            final PlaceAutocompleteAdapter.PlaceAutocomplete item = mAdapter.getItem(position);
+            final String placeId = String.valueOf(item.placeId);
+            Log.i(TAG, "Autocomplete item selected: " + item.description);
+
+            /*
+             Issue a request to the Places Geo Data API to retrieve a Place object with additional
+              details about the place.
+              */
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+                    .getPlaceById(mGoogleApiClient, placeId);
+            Toast.makeText(getApplicationContext(), "Clicked: " + item.description,
+                    Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "Called getPlaceById to get Place details for " + item.placeId);
+        }
+    };
+
+    /**
+     * Callback for results from a Places Geo Data API query that shows the first place result in
+     * the details view on screen.
+     */
+
+    private static Spanned formatPlaceDetails(Resources res, CharSequence name, String id,
+                                              CharSequence address, CharSequence phoneNumber, Uri websiteUri) {
+        Log.e(TAG, res.getString(R.string.place_details, name, id, address, phoneNumber,
+                websiteUri));
+        return Html.fromHtml(res.getString(R.string.place_details, name, id, address, phoneNumber,
+                websiteUri));
+
+    }
+
+
+    private void rebuildGoogleApiClient() {
+        // When we build the GoogleApiClient we specify where connected and connection failed
+        // callbacks should be returned and which Google APIs our app uses.
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, 0 /* clientId */, this)
+                .addConnectionCallbacks(this)
+                .addApi(Places.GEO_DATA_API)
+                .build();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+        Log.e(TAG, "onConnectionFailed: ConnectionResult.getErrorCode() = "
+                + connectionResult.getErrorCode());
+
+        // TODO(Developer): Check error code and notify the user of error state and resolution.
+        Toast.makeText(this,
+                "Could not connect to Google API Client: Error " + connectionResult.getErrorCode(),
+                Toast.LENGTH_SHORT).show();
+
+        // Disable API access in the adapter because the client was not initialised correctly.
+        mAdapter.setGoogleApiClient(null);
+
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        // Successfully connected to the API client. Pass it to the adapter to enable API access.
+        mAdapter.setGoogleApiClient(mGoogleApiClient);
+        Log.i(TAG, "GoogleApiClient connected.");
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        // Connection to the API client has been suspended. Disable API access in the client.
+        mAdapter.setGoogleApiClient(null);
+        Log.e(TAG, "GoogleApiClient connection suspended.");
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -182,139 +268,5 @@ public class FilterActivity extends FragmentActivity
         TextView v = (TextView) findViewById(res);
         v.setText(toThis);
     }
-
-    /** A method to download json data from url */
-    private String downloadUrl(String strUrl) throws IOException {
-        String data = "";
-        InputStream iStream = null;
-        HttpURLConnection urlConnection = null;
-        try{
-            URL url = new URL(strUrl);
-
-            // Creating an http connection to communicate with url
-            urlConnection = (HttpURLConnection) url.openConnection();
-
-            // Connecting to url
-            urlConnection.connect();
-
-            // Reading data from url
-            iStream = urlConnection.getInputStream();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-
-            StringBuffer sb = new StringBuffer();
-
-            String line = "";
-            while( ( line = br.readLine()) != null){
-                sb.append(line);
-            }
-
-            data = sb.toString();
-
-            br.close();
-
-        }catch(Exception e){
-            Log.d(TAG, e.toString());
-        }finally{
-            iStream.close();
-            urlConnection.disconnect();
-        }
-        return data;
-    }
-
-
-    // Fetches all places from GooglePlaces AutoComplete Web Service
-    private class PlacesTask extends AsyncTask<String, Void, String>{
-
-        @Override
-        protected String doInBackground(String... place) {
-            // For storing data from web service
-            String data = "";
-
-            // Obtain browser key from https://code.google.com/apis/console
-            String key = "key=" + R.string.password;
-
-            String input="";
-
-            try {
-                input = "input=" + URLEncoder.encode(place[0], "utf-8");
-            } catch (UnsupportedEncodingException e1) {
-                e1.printStackTrace();
-            }
-
-            // place type to be searched
-            String types = "types=geocode";
-
-            // Sensor enabled
-            String sensor = "sensor=false";
-
-            // Building the parameters to the web service
-            String parameters = input+"&"+types+"&"+sensor+"&"+key;
-
-            // Output format
-            String output = "json";
-
-            // Building the url to the web service
-            String url = "https://maps.googleapis.com/maps/api/place/autocomplete/"+output+"?"+parameters;
-
-            try{
-                // Fetching the data from we service
-                data = downloadUrl(url);
-            }catch(Exception e){
-                Log.d("Background Task",e.toString());
-            }
-            return data;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            // Creating ParserTask
-            parserTask = new ParserTask();
-
-            // Starting Parsing the JSON string returned by Web Service
-            parserTask.execute(result);
-        }
-    }
-
-    /** A class to parse the Google Places in JSON format */
-    private class ParserTask extends AsyncTask<String, Integer, List<HashMap<String,String>>>{
-
-        JSONObject jObject;
-
-        @Override
-        protected List<HashMap<String, String>> doInBackground(String... jsonData) {
-
-            List<HashMap<String, String>> places = null;
-
-            PlaceJSONParser placeJsonParser = new PlaceJSONParser();
-
-            try{
-                jObject = new JSONObject(jsonData[0]);
-
-                // Getting the parsed data as a List construct
-                places = placeJsonParser.parse(jObject);
-
-            }catch(Exception e){
-                Log.d("Exception",e.toString());
-            }
-            return places;
-        }
-
-        @Override
-        protected void onPostExecute(List<HashMap<String, String>> result) {
-
-            String[] from = new String[] { "description"};
-            int[] to = new int[] { android.R.id.text1 };
-
-            // Creating a SimpleAdapter for the AutoCompleteTextView
-            SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), result, android.R.layout.simple_list_item_1, from, to);
-
-            // Setting the adapter
-            atvPlaces.setAdapter(adapter);
-        }
-    }
-
 
 }

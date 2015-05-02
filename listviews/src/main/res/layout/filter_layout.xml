@@ -4,12 +4,12 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <com.demo.realita.CustomAutoCompleteTextView
-        android:id="@+id/atv_places"
-        android:layout_width="fill_parent"
+    <AutoCompleteTextView
+        android:id="@+id/autocomplete_places"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:hint="Type Address here" />
+        android:layout_width="wrap_content"
+        android:ems="10">
+        </AutoCompleteTextView>
 
     <TextView
     android:layout_width="wrap_content"

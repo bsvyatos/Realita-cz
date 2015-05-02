@@ -32,13 +32,11 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.android.gms.location.*;
 
 public class ListViewActivity extends BaseActivity {
 
     //Azure mobile service instance
     private MobileServiceClient mClient;
-    private GoogleApiClient mGoogleApiClient;
     private ListView mListView;
     private HouseItemAdapter mHouseItemAdapter;
     MobileServiceJsonTable mHouseTable;
@@ -57,12 +55,6 @@ public class ListViewActivity extends BaseActivity {
             List<String> fList = new ArrayList<String>();
             FavArr = new FavouriteArray(fList);
         }
-
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .setAccountName("")
-                .build();
 
         //First time application is started code
         if (!mPrefs.getBoolean("firstTime", false)) {
@@ -239,18 +231,6 @@ public class ListViewActivity extends BaseActivity {
             Log.e(TAG, "Can't Load filter: " + e.getMessage());
         }
         return mFltr;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    protected void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
     }
 
 
