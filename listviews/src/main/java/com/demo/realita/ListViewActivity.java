@@ -32,7 +32,6 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ListViewActivity extends BaseActivity {
 
     //Azure mobile service instance
@@ -141,21 +140,54 @@ public class ListViewActivity extends BaseActivity {
 
     }
 
+    private class SqlString {
+        public String sql_start;
+        public String sql_end;
+
+        SqlString() {
+            this.sql_start = "";
+            this.sql_end = "";
+        }
+    }
+
+    private SqlString SqlBuilder(Filter filter) {
+        SqlString ret = new SqlString();
+        List<String> where = new ArrayList<String>();
+
+        where.add("mOfferType = " + filter.mOfferType.ordinal());
+        if (filter.mPricemin != FilterBuilder.mPricemin)
+            where.add("mPrice >= " + filter.mPricemin);
+        if (filter.mPricemax != FilterBuilder.mPricemax)
+            where.add("mPrice <= " + filter.mPricemax);
+        if (filter.mSizemin != FilterBuilder.mSizemin)
+            where.add("mSize >= " + filter.mSizemin);
+        if (filter.mSizemax != FilterBuilder.mSizemax)
+            where.add("mSize <= " + filter.mSizemax);
+        if (filter.mBalkon != null)
+            where.add("mBalkony = " + (filter.mBalkon ? "1" : "0"));
+
+        ret.sql_end = Utils.concatList(where, " AND ");
+
+        return ret;
+    }
+
     public void showAll(View view) {
         //Show everything, unfiltered
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
                 try {
+                    SqlString sql_string = SqlBuilder(mFilter);
+                    String address = "Praha 13, Praha";
 
-                final JsonElement result =
-                        mHouseTable.where().field("mBalkony").eq(mFilter.mBalkon)
-                        .and().field("mPrice").ge(mFilter.mPricemin)
-                        .and().field("mPrice").le(mFilter.mPricemax)
-                        .and().field("mSize").ge(mFilter.mSizemin)
-                        .and().field("mSize").le(mFilter.mSizemax)
-                .execute().get();
-                final JsonArray results = result.getAsJsonArray();
+                    final JsonElement result =
+                            mHouseTable.where()
+                                    .parameter("sql_start", sql_string.sql_start)
+                                    .parameter("address", address)
+                                    .parameter("sql_end", sql_string.sql_end)
+                                    .execute().get();
+
+                    final JsonArray results = result.getAsJsonArray();
 
                 runOnUiThread(new Runnable() {
 

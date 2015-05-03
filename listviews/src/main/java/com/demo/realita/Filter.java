@@ -17,11 +17,11 @@ public class Filter implements Parcelable{
     int mPricemax;
     double mSizemin;
     double mSizemax;
-    boolean mBalkon;
+    Boolean mBalkon;
     OfferType mOfferType;
     int qParam;
 
-    public Filter(int mPricemin, int mPricemax, double mSizemin, double mSizemax, boolean mBalkon, int mOfferType, int qParam) {
+    public Filter(int mPricemin, int mPricemax, double mSizemin, double mSizemax, Boolean mBalkon, int mOfferType, int qParam) {
         this.mPricemin = mPricemin;
         this.mPricemax = mPricemax;
         this.mSizemin = mSizemin;
