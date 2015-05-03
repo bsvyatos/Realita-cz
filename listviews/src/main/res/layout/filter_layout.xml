@@ -7,9 +7,18 @@
     <AutoCompleteTextView
         android:id="@+id/autocomplete_places"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:ems="10">
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="Type Address here">
         </AutoCompleteTextView>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:src="@drawable/powered_by_google_light" />
 
     <TextView
     android:layout_width="wrap_content"
@@ -92,6 +101,64 @@
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:background="#c0c0c0"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#c0c0c0"
+        android:text="Set Appartment Size"/>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#c0c0c0"/>
+
+    <TextView
+        android:id="@+id/disposition_min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="13dp"
+        android:text="5+kk"/>
+
+    <SeekBar
+        android:id="@+id/disposition_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:id="@+id/disp_min_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1 "
+            android:layout_alignParentLeft="true"/>
+
+        <TextView
+            android:id="@+id/disp_max_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7k+1"
+            android:layout_alignParentRight="true"/>
+
+
+    </RelativeLayout>
+
+    <LinearLayout android:id="@+id/seekbar_placeholder"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+
 
     <TextView
         android:layout_width="wrap_content"

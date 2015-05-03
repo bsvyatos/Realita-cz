@@ -12,11 +12,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,10 @@ public class FilterActivity extends FragmentActivity
     Filter mFilter;
     EditText sMin;
     EditText sMax;
+    TextView dispMin;
+    String[] HDispositions;
+    TextView dMin;
+    TextView dMax;
 
     private static final String TAG = ListViewActivity.class.getName();
 
@@ -102,6 +108,45 @@ public class FilterActivity extends FragmentActivity
         sMax.setHint(Double.toString(mFilter.mSizemax));
 
         bSave = (Button) findViewById(R.id.button_save);
+
+        SeekBar mDisposition = (SeekBar) findViewById(R.id.disposition_bar);
+        mDisposition.setMax(14);
+        dispMin = (TextView) findViewById(R.id.disposition_min);
+        HDispositions = getResources().getStringArray(R.array.Disposition);
+        mDisposition.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                dispMin.setText(HDispositions[progress]);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        dMin = (TextView) findViewById(R.id.disp_min_txt);
+        dMax = (TextView) findViewById(R.id.disp_max_txt);
+
+        RangeSeekBar<Integer> seekBar_disp = new RangeSeekBar<Integer>(0, 14, getApplicationContext());
+        seekBar_disp.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
+            @Override
+            public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
+                // handle changed range values
+                dMin.setText(HDispositions[minValue]);
+                dMax.setText(HDispositions[maxValue]);
+                Log.i(TAG, "User selected new range values: MIN=" + minValue + ", MAX=" + maxValue);
+            }
+        });
+
+        // add RangeSeekBar to pre-defined layout
+        ViewGroup layout = (ViewGroup) findViewById(R.id.seekbar_placeholder);
+        layout.addView(seekBar_disp);
 
         bSave.setOnClickListener(bHandler);
 
@@ -169,6 +214,7 @@ public class FilterActivity extends FragmentActivity
               */
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
+
             Toast.makeText(getApplicationContext(), "Clicked: " + item.description,
                     Toast.LENGTH_SHORT).show();
             Log.i(TAG, "Called getPlaceById to get Place details for " + item.placeId);
