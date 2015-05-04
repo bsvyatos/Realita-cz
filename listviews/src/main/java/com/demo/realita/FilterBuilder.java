@@ -4,18 +4,20 @@ package com.demo.realita;
  * Created by Svyatoslav on 08-Apr-15.
  */
 public class FilterBuilder {
-    public static int mPricemin = 0;
-    public static int mPricemax = 50000000;
-    public static double mSizemin = 0;
-    public static double mSizemax = 1000;
-    public static Boolean mBalkon = null;
-    public static int mOfferType = OfferType.SALE.ordinal();
-    public static int qParam = 0;
+    static int mPricemin = 0;
+    static int mPricemax = 50000000;
+    static int mSizemin = 0;
+    static int mSizemax = 1000;
+    static Boolean mBalkon = true;
+    static int mOfferType = OfferType.SALE.ordinal();
+    static int qParam = 0;
+    static int minDisposition = 0;
+    static int maxDisposition = 14;
     
     public FilterBuilder(){ }
 
     public Filter build(){
-        return new Filter(mPricemin, mPricemax, mSizemin, mSizemax, mBalkon, mOfferType, qParam);
+        return new Filter(mPricemin, mPricemax, mSizemin, mSizemax, mBalkon, mOfferType, qParam, minDisposition, maxDisposition);
     }
 
     public FilterBuilder priceMin(int mPricemin){
@@ -47,8 +49,19 @@ public class FilterBuilder {
         this.mOfferType = mOfferType;
         return this;
     }
+
     public FilterBuilder qParam(int qParam){
         this.qParam = qParam;
+        return this;
+    }
+
+    public FilterBuilder minDisposition(int minDisposition){
+        this.minDisposition = minDisposition;
+        return this;
+    }
+
+    public FilterBuilder maxDisposition(int maxDisposition){
+        this.maxDisposition = maxDisposition;
         return this;
     }
 }

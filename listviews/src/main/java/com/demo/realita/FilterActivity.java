@@ -16,9 +16,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,12 +38,11 @@ public class FilterActivity extends FragmentActivity
         ,GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks{
     Button bSave;
     Filter mFilter;
-    EditText sMin;
-    EditText sMax;
-    TextView dispMin;
     String[] HDispositions;
     TextView dMin;
     TextView dMax;
+    TextView minSize;
+    TextView maxSize;
 
     private static final String TAG = ListViewActivity.class.getName();
 
@@ -93,6 +91,7 @@ public class FilterActivity extends FragmentActivity
                 BOUNDS_CZ_SK, null);
         mAutocompleteView.setAdapter(mAdapter);
 
+        //Set dialogs on minimum/maximum price
         setText(R.id.min_price, Integer.toString(mFilter.mPricemin) + " K?");
         LinearLayout pMinLayout = (LinearLayout) findViewById(R.id.MinPriceButton);
         pMinLayout.setOnClickListener(pMinOnClick);
@@ -101,74 +100,96 @@ public class FilterActivity extends FragmentActivity
         LinearLayout pMaxLayout = (LinearLayout) findViewById(R.id.MaxPriceButton);
         pMaxLayout.setOnClickListener(pMaxOnClick);
 
-        sMin = (EditText) findViewById(R.id.size_min);
-        sMin.setHint(Double.toString(mFilter.mSizemin));
-
-        sMax = (EditText) findViewById(R.id.size_max);
-        sMax.setHint(Double.toString(mFilter.mSizemax));
-
+        //Set dialog for Estate type
+        RelativeLayout estateType = (RelativeLayout) findViewById(R.id.EstateTypeButton);
+        estateType.setOnClickListener(eTypeOnClick);
         bSave = (Button) findViewById(R.id.button_save);
 
-        SeekBar mDisposition = (SeekBar) findViewById(R.id.disposition_bar);
-        mDisposition.setMax(14);
-        dispMin = (TextView) findViewById(R.id.disposition_min);
         HDispositions = getResources().getStringArray(R.array.Disposition);
-        mDisposition.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                dispMin.setText(HDispositions[progress]);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
         dMin = (TextView) findViewById(R.id.disp_min_txt);
         dMax = (TextView) findViewById(R.id.disp_max_txt);
 
-        RangeSeekBar<Integer> seekBar_disp = new RangeSeekBar<Integer>(0, 14, getApplicationContext());
-        seekBar_disp.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
+        RangeSeekBar<Integer> seekBarDisp = new RangeSeekBar<Integer>(0, 14, getApplicationContext());
+        if(mFilter.minDisposition != 0){
+            seekBarDisp.setSelectedMinValue(mFilter.minDisposition);
+        }
+        if(mFilter.maxDisposition != 14){
+            seekBarDisp.setSelectedMaxValue(mFilter.maxDisposition);
+        }
+        seekBarDisp.setNotifyWhileDragging(true);
+        seekBarDisp.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
                 // handle changed range values
                 dMin.setText(HDispositions[minValue]);
                 dMax.setText(HDispositions[maxValue]);
+                mFilter.minDisposition = minValue;
+                mFilter.maxDisposition = maxValue;
                 Log.i(TAG, "User selected new range values: MIN=" + minValue + ", MAX=" + maxValue);
             }
         });
 
         // add RangeSeekBar to pre-defined layout
         ViewGroup layout = (ViewGroup) findViewById(R.id.seekbar_placeholder);
-        layout.addView(seekBar_disp);
+        layout.addView(seekBarDisp);
+
+        minSize = (TextView) findViewById(R.id.size_min_txt);
+        maxSize = (TextView) findViewById(R.id.size_max_txt);
+
+        RangeSeekBar<Integer> seekBarSize = new RangeSeekBar<Integer>(4, 15, getApplicationContext());
+        seekBarSize.setNotifyWhileDragging(true);
+        if(mFilter.mSizemin != 0){
+            seekBarSize.setSelectedMinValue(mFilter.mSizemin/10);
+        }
+        if(mFilter.mSizemax != 1000){
+            seekBarSize.setSelectedMaxValue(mFilter.mSizemax/10);
+        }
+
+        seekBarSize.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
+            @Override
+            public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
+                // handle changed range values
+                String minSizeOut = Integer.toString(minValue*10) + "m\u00B2";
+                String maxSizeOut = Integer.toString(maxValue*10) + "m\u00B2";
+                mFilter.mSizemin = minValue*10;
+                mFilter.mSizemax = maxValue*10;
+
+                if(minValue == 4){
+                    minSizeOut = "Less than 40 m\u00B2";
+                    mFilter.mSizemin = 0;
+                }
+
+                if(maxValue == 15){
+                    maxSizeOut = "More than 150 m\u00B2";
+                    mFilter.mSizemax = 1000;
+                }
+
+                minSize.setText(minSizeOut);
+                maxSize.setText(maxSizeOut);
+                Log.i(TAG, "User selected new range values: MIN=" + minValue + ", MAX=" + maxValue);
+            }
+        });
+
+        layout = (ViewGroup) findViewById(R.id.seekbar_size);
+        layout.addView(seekBarSize);
+
 
         bSave.setOnClickListener(bHandler);
 
         Intent returnIntent = new Intent();
         setResult(RESULT_CANCELED, returnIntent);
-    }
+
+    } //OnCreate()
 
     View.OnClickListener bHandler = new View.OnClickListener() {
         public void onClick(View v) {
-
-            try {
-                mFilter.mSizemin = Integer.parseInt(sMin.getText().toString());
-            } catch(NumberFormatException s){ }
-            try {
-                mFilter.mSizemax = Integer.parseInt(sMax.getText().toString());
-            } catch(NumberFormatException s){ }
 
             Toast.makeText(getApplicationContext(), "Your preferences have been successfully saved", Toast.LENGTH_SHORT).show();
             Intent returnIntent = new Intent();
             returnIntent.putExtra("Filter", mFilter);
             setResult(RESULT_OK, returnIntent);
             finish();
+
         }
     };
 
@@ -183,6 +204,13 @@ public class FilterActivity extends FragmentActivity
         @Override
         public void onClick(View v) {
             showNoticeDialog("Maximum Price", 1);
+        }
+    };
+
+    View.OnClickListener eTypeOnClick = new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+            showEstateTypeDialog();
         }
     };
 
@@ -291,6 +319,11 @@ public class FilterActivity extends FragmentActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showEstateTypeDialog(){
+        DialogFragment dialog = new EstateTypeDialog();
+        dialog.show(getSupportFragmentManager(), "Pick Estate Type");
     }
 
     public void showNoticeDialog(String msg, int mDialogState) {

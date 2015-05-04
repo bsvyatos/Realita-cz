@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
 
     <AutoCompleteTextView
         android:id="@+id/autocomplete_places"
@@ -37,9 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:layout_marginTop="5dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,7 +55,6 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
             android:src="@drawable/ic_action_next_item"
             />
 
@@ -73,9 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:layout_marginTop="5dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,9 +88,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:src="@drawable/ic_action_next_item"
-            />
+            android:src="@drawable/ic_action_next_item"/>
 
     </LinearLayout>
 
@@ -114,20 +109,47 @@
         android:layout_height="2dp"
         android:background="#c0c0c0"/>
 
-    <TextView
-        android:id="@+id/disposition_min"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="13dp"
-        android:text="5+kk"/>
-
-    <SeekBar
-        android:id="@+id/disposition_bar"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:id="@+id/size_min_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Less than 40 m\u00B2 "
+            android:layout_alignParentLeft="true"/>
+
+        <TextView
+            android:id="@+id/size_max_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="More than 150 m\u00B2"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <LinearLayout android:id="@+id/seekbar_size"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#c0c0c0"
+        android:text="Set Appartment Disposition"/>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#c0c0c0"/>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -135,20 +157,21 @@
         android:orientation="horizontal"
         android:layout_marginLeft="13dp"
         android:layout_marginRight="13dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="6dp">
 
         <TextView
             android:id="@+id/disp_min_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1 "
+            android:text="1"
             android:layout_alignParentLeft="true"/>
 
         <TextView
             android:id="@+id/disp_max_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="7k+1"
+            android:text="7+1"
             android:layout_alignParentRight="true"/>
 
 
@@ -159,47 +182,97 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
 
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#c0c0c0"
-        android:text="Minimum Size"/>
+        android:text="Set Estate Type"/>
 
-    <EditText
-        android:id="@+id/size_min"
+    <View
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="Minimum Size"
-        android:inputType="number"/>
+        android:layout_height="2dp"
+        android:background="#c0c0c0"/>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/EstateTypeButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#c0c0c0"
-        android:text="Maximum Size"/>
-
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="horizontal">
-        <EditText android:id="@+id/size_max"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Maximum Size"
-            android:inputType="number"/>
-        <Button android:id="@+id/button_save"
+        android:layout_marginBottom="5dp">
+        <TextView
+            android:id="@+id/eTypeView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Estate Type:"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+        <TextView
+            android:id="@+id/estateType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="Byt"
+            android:layout_below="@+id/eTypeView"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_action_next_item"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#c0c0c0"/>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_weight="1"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"
+            android:background="?android:attr/dividerVertical"
+            android:layout_alignParentTop="true"/>
+        <View
+            android:id="@+id/ViewColorPickerHelper"
+            android:layout_width="1dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="4dip"
+            android:layout_marginTop="4dip"
+            android:background="?android:attr/dividerVertical"
+            android:layout_centerHorizontal="true"/>
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/ViewColorPickerHelper"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@android:string/cancel"
+            android:layout_alignParentBottom="true"/>
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="?android:attr/selectableItemBackground"
             android:text="@string/button_save"
-            android:onClick="sendMessage" />
-    </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/ViewColorPickerHelper"/>
+    </RelativeLayout>
 
 
 

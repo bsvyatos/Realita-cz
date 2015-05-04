@@ -30,6 +30,7 @@
 
     <!-- Text Fields -->
     <string name="button_save">Save</string>
+    <string name="button_cancel">Cancel</string>
 
     <string-array name="OfferType">
         <item>Buy</item>
