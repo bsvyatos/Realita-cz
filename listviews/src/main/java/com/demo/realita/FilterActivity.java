@@ -242,6 +242,7 @@ public class FilterActivity extends FragmentActivity
               */
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
+            mFilter.mAddress = (String) item.description;
 
             Toast.makeText(getApplicationContext(), "Clicked: " + item.description,
                     Toast.LENGTH_SHORT).show();

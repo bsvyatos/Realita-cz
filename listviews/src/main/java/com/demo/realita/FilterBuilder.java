@@ -17,7 +17,8 @@ public class FilterBuilder {
     public FilterBuilder(){ }
 
     public Filter build(){
-        return new Filter(mPricemin, mPricemax, mSizemin, mSizemax, mBalkon, mOfferType, qParam, minDisposition, maxDisposition);
+        return new Filter(mPricemin, mPricemax, mSizemin, mSizemax, mBalkon
+                , mOfferType, qParam, minDisposition, maxDisposition, "");
     }
 
     public FilterBuilder priceMin(int mPricemin){
