@@ -22,8 +22,10 @@ public class Filter implements Parcelable{
     int qParam;
     int minDisposition;
     int maxDisposition;
+    String mAddress;
 
-    public Filter(int mPricemin, int mPricemax, int mSizemin, int mSizemax, boolean mBalkon, int mOfferType, int qParam, int minDisposition, int maxDisposition) {
+    public Filter(int mPricemin, int mPricemax, int mSizemin, int mSizemax, boolean mBalkon
+            , int mOfferType, int qParam, int minDisposition, int maxDisposition, String mAddress) {
         this.mPricemin = mPricemin;
         this.mPricemax = mPricemax;
         this.mSizemin = mSizemin;
@@ -33,6 +35,7 @@ public class Filter implements Parcelable{
         this.qParam = qParam;
         this.minDisposition = minDisposition;
         this.maxDisposition = maxDisposition;
+        this.mAddress = mAddress;
     }
 
     public Filter(Parcel in){
@@ -45,6 +48,7 @@ public class Filter implements Parcelable{
         this.qParam = in.readInt();
         this.minDisposition = in.readInt();
         this.maxDisposition = in.readInt();
+        this.mAddress = in.readString();
     }
 
     @Override
@@ -63,6 +67,7 @@ public class Filter implements Parcelable{
         parcel.writeInt(qParam);
         parcel.writeInt(minDisposition);
         parcel.writeInt(maxDisposition);
+        parcel.writeString(mAddress);
     }
 
     public static final Parcelable.Creator<Filter> CREATOR = new Parcelable.Creator<Filter>() {

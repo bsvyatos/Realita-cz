@@ -178,12 +178,11 @@ public class ListViewActivity extends BaseActivity {
             protected Void doInBackground(Void... params) {
                 try {
                     SqlString sql_string = SqlBuilder(mFilter);
-                    String address = "Praha 13, Praha";
 
                     final JsonElement result =
                             mHouseTable.where()
                                     .parameter("sql_start", sql_string.sql_start)
-                                    .parameter("address", address)
+                                    .parameter("address", mFilter.mAddress)
                                     .parameter("sql_end", sql_string.sql_end)
                                     .execute().get();
 
