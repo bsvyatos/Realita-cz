@@ -1,5 +1,6 @@
 package com.demo.realita;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -344,6 +346,7 @@ public class FilterActivity extends FragmentActivity
             setText(R.id.max_price, Integer.toString(mFilter.mPricemax) + " K?");
         }
         dialog.dismiss();
+        findViewById(R.id.filter_main_layout).requestFocus();
     }
 
     @Override

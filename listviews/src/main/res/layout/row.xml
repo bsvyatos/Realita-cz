@@ -9,7 +9,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:src="@drawable/home"
-        android:padding="10dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true" />
 

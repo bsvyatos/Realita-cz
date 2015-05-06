@@ -1,11 +1,18 @@
 package com.demo.realita;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -15,6 +22,11 @@ import android.widget.Toast;
 import com.demo.realita.R;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -30,6 +42,10 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
     int mLayoutResourceId;
     //Object contains only the List itself, should be re-written
     FavouriteArray FavArr;
+    Bitmap bitmap;
+    String imgUrl;
+    private static final String TAG = ListViewActivity.class.getName();
+
 
     public HouseItemAdapter(Context context, int resource, FavouriteArray FavArr) {
         super(context, resource);
@@ -86,8 +102,19 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
         holder.priceView.setText(String.valueOf(houseItem.mPrice) + " Kč");
 
         //for getting the image
-        int resID = mContext.getResources().getIdentifier(houseItem.mImgPreview, "drawable", mContext.getPackageName());
-        holder.imgView.setImageResource(resID);
+        JSONObject jObj;
+        try {
+            jObj = new JSONObject(houseItem.mImgPreview);
+            JSONArray jArray = jObj.getJSONArray("thumbs");
+            imgUrl = jArray.getString(0);
+        } catch(Exception e){
+            Log.e(TAG, e.getMessage());
+        }
+
+        Params async = new Params(holder.imgView, imgUrl);
+        new LoadImage().execute(async);
+        //holder.imgView.setImageResource(R.drawable.home1);
+
 
         //state of the start
         if(FavArr.favList.contains(houseItem.Id)){
@@ -105,7 +132,9 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
         public void onClick(View view) {
             Integer viewPosition = (Integer) view.getTag();
             HouseItem p = getItem(viewPosition);
+
             Toast.makeText(getContext(), p.mHouseInfo, Toast.LENGTH_SHORT).show();
+
         }
     };
 
@@ -143,4 +172,40 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
         ImageView imgView;
         ImageButton imgButt;
     }
+
+    private static class Params{
+        ImageView img;
+        String param;
+        Params(ImageView img, String param){
+            this.img = img;
+            this.param = param;
+        }
+    }
+
+    private class LoadImage extends AsyncTask<Params, String, Bitmap> {
+        private ImageView mImg;
+//        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+//        Display display = wm.getDefaultDisplay();
+
+
+
+        protected Bitmap doInBackground(Params... args) {
+            mImg = args[0].img;
+
+            try {
+                bitmap = BitmapFactory.decodeStream((InputStream) new URL(args[0].param).getContent());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap image) {
+            if (image != null) {
+                mImg.setImageBitmap(image);
+            }
+        }
+    }
+
 }
