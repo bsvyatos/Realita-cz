@@ -112,8 +112,8 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
         }
 
         Params async = new Params(holder.imgView, imgUrl);
-        new LoadImage().execute(async);
-        //holder.imgView.setImageResource(R.drawable.home1);
+        //new LoadImage().execute(async);
+        holder.imgView.setImageResource(R.drawable.home1);
 
 
         //state of the start
