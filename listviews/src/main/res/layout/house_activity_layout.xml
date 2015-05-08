@@ -58,8 +58,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:id="@+id/houseDescription"
-            android:text="Description..."/>
+            android:id="@+id/FullDescription"
+            android:text="FullDescription"/>
 
         <View
             android:layout_width="fill_parent"

@@ -17,6 +17,7 @@ public class HouseInfoActivity extends Activity {
     TextView mHouseInfo;
     TextView mHouseAddr;
     TextView mHousePrice;
+    TextView mFullDescription;
     ImageView mHouseImg;
 
     @Override
@@ -30,17 +31,20 @@ public class HouseInfoActivity extends Activity {
         //Get data
         mHouseAddr = (TextView) findViewById(R.id.houseAddress);
         mHouseInfo = (TextView) findViewById(R.id.houseImfo);
+        mFullDescription = (TextView) findViewById(R.id.FullDescription);
         mHousePrice = (TextView) findViewById(R.id.housePrice);
         mHouseImg = (ImageView) findViewById(R.id.houseImg);
 
         //Set fields
         mHouseAddr.setText(item.mAddress);
-        mHouseInfo.setText(item.mHouseInfo);
-        mHousePrice.setText(String.valueOf(item.mPrice) + " Kč");
+        mHouseInfo.setText(item.mDescription);
+        mHousePrice.setText(Utils.numbersFormat().format(item.mPrice) + " Kč");
+        mFullDescription.setText(item.mFullDescription);
+        mHouseInfo.setText(item.mDescription);
 
         //set up the Image
-        int resID = getResources().getIdentifier(item.mImgPreview, "drawable", getPackageName());
-        mHouseImg.setImageResource(resID);
+        //int resID = getResources().getIdentifier(item.mImgPreview, "drawable", getPackageName());
+        mHouseImg.setImageResource(R.drawable.home1);
     }
 
     @Override

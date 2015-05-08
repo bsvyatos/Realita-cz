@@ -21,6 +21,7 @@ public class HouseItem implements Parcelable {
     public int mBuildingType;
     public int mEquipment;
     public String mDescription;
+    public String mFullDescription = "";
     public double mSize;
     public int mPrice;
     public int mFees;
@@ -52,6 +53,8 @@ public class HouseItem implements Parcelable {
             this.mEquipment = item.getAsJsonObject().getAsJsonPrimitive("mEquipment").getAsInt();
         if (!(item.getAsJsonObject().get("mDescription") instanceof JsonNull))
             this.mDescription = item.getAsJsonObject().getAsJsonPrimitive("mDescription").getAsString();
+        if (!(item.getAsJsonObject().get("mFullDescription") instanceof JsonNull))
+            this.mFullDescription = item.getAsJsonObject().getAsJsonPrimitive("mFullDescription").getAsString();
         if (!(item.getAsJsonObject().get("mSize") instanceof JsonNull))
             this.mSize = item.getAsJsonObject().getAsJsonPrimitive("mSize").getAsInt();
         if (!(item.getAsJsonObject().get("mPrice") instanceof JsonNull))
@@ -82,6 +85,7 @@ public class HouseItem implements Parcelable {
         this.mBuildingType = in.readInt();
         this.mEquipment = in.readInt();
         this.mDescription = in.readString();
+        this.mFullDescription = in.readString();
         this.mSize = in.readDouble();
         this.mPrice = in.readInt();
         this.mFees = in.readInt();
@@ -111,6 +115,7 @@ public class HouseItem implements Parcelable {
         parcel.writeInt(mBuildingType);
         parcel.writeInt(mEquipment);
         parcel.writeString(mDescription);
+        parcel.writeString(mFullDescription);
         parcel.writeDouble(mSize);
         parcel.writeInt(mPrice);
         parcel.writeInt(mFees);

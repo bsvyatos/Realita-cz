@@ -46,7 +46,6 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
     FavouriteArray FavArr;
     Bitmap bitmap;
     String imgUrl;
-    DecimalFormat mDf;
     private static final String TAG = ListViewActivity.class.getName();
 
 
@@ -56,11 +55,6 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
         this.mContext = context;
         this.mLayoutResourceId = resource;
         this.FavArr = FavArr;
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        mDf = new DecimalFormat();
-        mDf.setDecimalFormatSymbols(symbols);
-        mDf.setGroupingSize(3);
-        mDf.setMaximumFractionDigits(2);
     }
 
     @Override
@@ -107,7 +101,7 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
         //setting the view to reflect the data we need to display
         holder.addrView.setText(houseItem.mAddress);
         holder.infoView.setText(houseItem.mDescription);
-        holder.priceView.setText(mDf.format(houseItem.mPrice) + " Kč");
+        holder.priceView.setText(Utils.numbersFormat().format(houseItem.mPrice) + " Kč");
 
         //for getting the image
         JSONObject jObj;
