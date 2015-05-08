@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.demo.realita.R;
@@ -45,6 +46,18 @@ public class HouseInfoActivity extends Activity {
         //set up the Image
         //int resID = getResources().getIdentifier(item.mImgPreview, "drawable", getPackageName());
         mHouseImg.setImageResource(R.drawable.home1);
+        final String[] str={"one","two","three","asdfgf"};
+        final LinearLayout rl=(LinearLayout) findViewById(R.id.linlayout1);
+        final TextView[] tv=new TextView[10];
+
+        for(int i=0;i<str.length;i++)
+        {
+            tv[i]=new TextView(this);
+            tv[i].setText(str[i]);
+            tv[i].setTextSize((float) 20);
+            tv[i].setPadding(10, 10, 10, 10);
+            rl.addView(tv[i]);
+        }
     }
 
     @Override
