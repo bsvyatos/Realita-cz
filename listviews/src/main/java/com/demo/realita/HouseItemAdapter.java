@@ -27,6 +27,8 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -44,6 +46,7 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
     FavouriteArray FavArr;
     Bitmap bitmap;
     String imgUrl;
+    DecimalFormat mDf;
     private static final String TAG = ListViewActivity.class.getName();
 
 
@@ -53,6 +56,11 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
         this.mContext = context;
         this.mLayoutResourceId = resource;
         this.FavArr = FavArr;
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        mDf = new DecimalFormat();
+        mDf.setDecimalFormatSymbols(symbols);
+        mDf.setGroupingSize(3);
+        mDf.setMaximumFractionDigits(2);
     }
 
     @Override
@@ -98,8 +106,8 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
 
         //setting the view to reflect the data we need to display
         holder.addrView.setText(houseItem.mAddress);
-        holder.infoView.setText(houseItem.mHouseInfo);
-        holder.priceView.setText(String.valueOf(houseItem.mPrice) + " Kč");
+        holder.infoView.setText(houseItem.mDescription);
+        holder.priceView.setText(mDf.format(houseItem.mPrice) + " Kč");
 
         //for getting the image
         JSONObject jObj;
@@ -112,8 +120,8 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
         }
 
         Params async = new Params(holder.imgView, imgUrl);
-        //new LoadImage().execute(async);
-        holder.imgView.setImageResource(R.drawable.home1);
+        new LoadImage().execute(async);
+        //holder.imgView.setImageResource(R.drawable.home1);
 
 
         //state of the start
@@ -193,7 +201,9 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
             mImg = args[0].img;
 
             try {
-                bitmap = BitmapFactory.decodeStream((InputStream) new URL(args[0].param).getContent());
+                bitmap = Bitmap.createScaledBitmap(
+                        BitmapFactory.decodeStream((InputStream) new URL(args[0].param).getContent())
+                        , 280, 280, true);
 
             } catch (Exception e) {
                 e.printStackTrace();
