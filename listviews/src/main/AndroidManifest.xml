@@ -39,6 +39,14 @@
                 android:value=".ListViewActivity" />
         </activity>
 
+        <activity android:name=".DescriptionActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".HouseInfoActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HouseInfoActivity"/>
+        </activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyADYd0Jn7KEJI2mTMjDe1UAcrsQS1gbkII"

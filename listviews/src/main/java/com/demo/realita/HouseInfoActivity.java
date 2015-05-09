@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ public class HouseInfoActivity extends Activity {
     TextView mHousePrice;
     TextView mFullDescription;
     ImageView mHouseImg;
+    LinearLayout mDescButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +37,24 @@ public class HouseInfoActivity extends Activity {
         mFullDescription = (TextView) findViewById(R.id.FullDescription);
         mHousePrice = (TextView) findViewById(R.id.housePrice);
         mHouseImg = (ImageView) findViewById(R.id.houseImg);
+        mDescButton = (LinearLayout) findViewById(R.id.DescButton);
 
         //Set fields
+        final String mDescription = item.mFullDescription;
         mHouseAddr.setText(item.mAddress);
-        mHouseInfo.setText(item.mDescription);
+        mHouseInfo.setText(mDescription);
         mHousePrice.setText(Utils.numbersFormat().format(item.mPrice) + " Kč");
         mFullDescription.setText(item.mFullDescription);
         mHouseInfo.setText(item.mDescription);
+
+        mDescButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent t = new Intent();
+                t.putExtra("Description", mDescription);
+                startActivity(t);
+            }
+        });
 
         //set up the Image
         //int resID = getResources().getIdentifier(item.mImgPreview, "drawable", getPackageName());
