@@ -50,7 +50,7 @@ public class HouseInfoActivity extends Activity {
         mDescButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent t = new Intent();
+                Intent t = new Intent(v.getContext(), DescriptionActivity.class);
                 t.putExtra("Description", mDescription);
                 startActivity(t);
             }
