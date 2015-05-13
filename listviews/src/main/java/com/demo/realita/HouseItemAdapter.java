@@ -103,7 +103,7 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
         holder.infoView.setText(houseItem.mDescription);
         holder.priceView.setText(Utils.numbersFormat().format(houseItem.mPrice) + " Kč");
 
-        //for getting the image
+        //getting the image
         JSONObject jObj;
         try {
             jObj = new JSONObject(houseItem.mImgPreview);
@@ -113,8 +113,8 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
             Log.e(TAG, e.getMessage());
         }
 
-        Params async = new Params(holder.imgView, imgUrl);
-        new LoadImage().execute(async);
+        Params asyncParams = new Params(holder.imgView, imgUrl);
+        new LoadImage().execute(asyncParams);
         //holder.imgView.setImageResource(R.drawable.home1);
 
 
@@ -184,12 +184,10 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
         }
     }
 
-    private class LoadImage extends AsyncTask<Params, String, Bitmap> {
+    private class LoadImage extends AsyncTask<Params, Void, Bitmap> {
         private ImageView mImg;
 //        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
 //        Display display = wm.getDefaultDisplay();
-
-
 
         protected Bitmap doInBackground(Params... args) {
             mImg = args[0].img;

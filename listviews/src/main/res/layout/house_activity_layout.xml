@@ -3,84 +3,80 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/houseImg"
-        android:src="@drawable/home"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"/>
-
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/houseImg"
-        android:id="@+id/linlayout1"
-        android:padding="10dp">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <com.demo.realita.CustomViewPager
+            android:id="@+id/houseImgPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/houseAddress"
-            android:layout_marginBottom="5dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="This will be house Address"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/houseImfo"
-            android:text="This will be house info"/>
-
-        <TextView
-            android:textColor="#F00000"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/housePrice"
-            android:text="7 000 000 000"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#c0c0c0"
-            android:text="Description"/>
-
-        <LinearLayout
-            android:id="@+id/DescButton"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:background="#c0c0c0"/>
+            android:layout_below="@id/houseImgPager"
+            android:id="@+id/linlayout1"
+            android:padding="10dp">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/houseAddress"
+                android:layout_marginBottom="5dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="This will be house Address"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/houseImfo"
+                android:text="This will be house info"/>
+
+            <TextView
+                android:textColor="#F00000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/housePrice"
+                android:text="7 000 000 000"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#c0c0c0"
+                android:text="Description"/>
+
+            <LinearLayout
+                android:id="@+id/DescButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:id="@+id/FullDescription"
-                android:text="FullDescription"/>
+                android:orientation="vertical">
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:background="#c0c0c0"/>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp"
+                    android:background="#c0c0c0"/>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:id="@+id/FullDescription"
+                    android:text="FullDescription"/>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="#c0c0c0"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-</RelativeLayout>
+    </RelativeLayout>
 </ScrollView>

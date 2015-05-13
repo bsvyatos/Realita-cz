@@ -19,5 +19,7 @@ public class DescriptionActivity extends Activity {
 
         TextView descView = (TextView) findViewById(R.id.DescView);
         descView.setText(mDescription);
+        descView.setMaxLines(Integer.MAX_VALUE);
+        descView.setEllipsize(null);
     }
 }
