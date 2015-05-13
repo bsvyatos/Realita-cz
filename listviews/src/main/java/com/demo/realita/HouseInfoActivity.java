@@ -1,35 +1,25 @@
 package com.demo.realita;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.demo.realita.R;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.InputStream;
 import java.net.URL;
 
@@ -50,6 +40,7 @@ public class HouseInfoActivity extends Activity {
     String imgUrl;
     HouseItem item;
     JSONArray jArray;
+
     private static final String TAG = ListViewActivity.class.getName();
 
 
@@ -68,8 +59,8 @@ public class HouseInfoActivity extends Activity {
         mHousePrice = (TextView) findViewById(R.id.housePrice);
         mDescButton = (LinearLayout) findViewById(R.id.DescButton);
 
-        //getting the image
         JSONObject jObj;
+        //Get the array of images in url format
         try {
             jObj = new JSONObject(item.mImgPreview);
             jArray = jObj.getJSONArray("photos");
@@ -82,6 +73,14 @@ public class HouseInfoActivity extends Activity {
         mViewPager = (CustomViewPager) findViewById(R.id.houseImgPager);
         mPagerAdapter = new ImagePagerAdapter();
         mViewPager.setAdapter(mPagerAdapter);
+
+        mViewPager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent t = new Intent(v.getContext(), ImageGalleryActivity.class);
+                t.putExtra("ImageArr", item.mImgPreview);
+            }
+        });
 
         //Set fields
         final String mDescription = item.mFullDescription;
@@ -138,6 +137,8 @@ public class HouseInfoActivity extends Activity {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             ImageView imageView = new ImageView(HouseInfoActivity.this);
+
+            //Get url of the image of current position
             try {
                 imgUrl = jArray.getString(position);
             } catch(Exception e){
@@ -148,7 +149,6 @@ public class HouseInfoActivity extends Activity {
             new LoadImage().execute(asyncParams);
             //holder.imgView.setImageResource(R.drawable.home1);
 
-            //imageView.setImageResource(res[position]);
             LayoutParams imageParams =  new LayoutParams(LayoutParams.MATCH_PARENT,
                     LayoutParams.MATCH_PARENT);
             imageView.setLayoutParams(imageParams);
@@ -158,9 +158,10 @@ public class HouseInfoActivity extends Activity {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO implement image gallery to open here
-                    Toast.makeText(HouseInfoActivity.this, "You clicked " + Integer.toString(pageNum) + " page",
-                            Toast.LENGTH_SHORT).show();
+                    Intent t = new Intent(v.getContext(), ImageGalleryActivity.class);
+                    t.putExtra("ImageArr", item.mImgPreview);
+                    t.putExtra("Position", pageNum);
+                    startActivity(t);
                 }
             });
 
