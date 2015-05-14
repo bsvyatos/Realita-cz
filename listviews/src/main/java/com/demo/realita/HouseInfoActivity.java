@@ -145,7 +145,9 @@ public class HouseInfoActivity extends Activity {
                 e.printStackTrace();
             }
 
-            Params asyncParams = new Params(imageView, imgUrl);
+            DisplayMetrics display = HouseInfoActivity.this.getResources().getDisplayMetrics();
+
+            Params asyncParams = new Params(imageView, imgUrl, display.widthPixels, 280);
             new LoadImage().execute(asyncParams);
             //holder.imgView.setImageResource(R.drawable.home1);
 
@@ -176,42 +178,7 @@ public class HouseInfoActivity extends Activity {
         }
     }
 
-    private static class Params{
-        ImageView img;
-        String param;
-        Params(ImageView img, String param){
-            this.img = img;
-            this.param = param;
-        }
-    }
 
-
-    private class LoadImage extends AsyncTask<Params, Void, Bitmap> {
-        private ImageView mImg;
-        DisplayMetrics display = HouseInfoActivity.this.getResources().getDisplayMetrics();
-
-        int width = display.widthPixels;
-
-        protected Bitmap doInBackground(Params... args) {
-            mImg = args[0].img;
-
-            try {
-                bitmap = Bitmap.createScaledBitmap(
-                        BitmapFactory.decodeStream((InputStream) new URL(args[0].param).getContent())
-                        , width, 280, true);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap image) {
-            if (image != null) {
-                mImg.setImageBitmap(image);
-            }
-        }
-    }
 
 
 

@@ -1,5 +1,6 @@
 package com.demo.realita;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,6 +32,7 @@ public class ImageGalleryActivity extends Activity {
     int mCurrentPosition;
     String imgUrl;
     Bitmap bitmap;
+    ActionBar mActionBar;
     private static final String TAG = ListViewActivity.class.getName();
 
 
@@ -42,6 +44,7 @@ public class ImageGalleryActivity extends Activity {
         Intent t = getIntent();
         mImgArr = t.getStringExtra("ImageArr");
         mCurrentPosition = t.getIntExtra("Position", 0);
+        mActionBar = getActionBar();
         JSONObject jObj;
         //Get the array of images in url format
         try {
@@ -52,9 +55,12 @@ public class ImageGalleryActivity extends Activity {
             Log.e(TAG, e.getMessage());
         }
 
+
         ViewPager mImgPager = (ViewPager) findViewById(R.id.GalleryPager);
         ImagePagerAdapter mAdapter = new ImagePagerAdapter();
         mImgPager.setAdapter(mAdapter);
+        DetailOnPageListener pageListener = new DetailOnPageListener();
+        mImgPager.setOnPageChangeListener(pageListener);
 
         mImgPager.setCurrentItem(mCurrentPosition);
 
@@ -62,16 +68,10 @@ public class ImageGalleryActivity extends Activity {
     }
 
     public class DetailOnPageListener extends ViewPager.SimpleOnPageChangeListener{
-        private int currentPage;
         @Override
         public void onPageSelected(int position){
-            currentPage = position;
+            mActionBar.setTitle(" " + Integer.toString(position+1) + " of " + Integer.toString(mNumberOfPages));
         }
-        public final int getCurrentPage(){
-            return currentPage;
-        }
-//        getActionBar().setTitle("of" + Integer.toString(mNumberOfPages));
-
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,8 +99,9 @@ public class ImageGalleryActivity extends Activity {
             } catch(Exception e){
                 e.printStackTrace();
             }
+            DisplayMetrics display = ImageGalleryActivity.this.getResources().getDisplayMetrics();
 
-            Params asyncParams = new Params(imageView, imgUrl);
+            Params asyncParams = new Params(imageView, imgUrl, display.widthPixels, 280);
             new LoadImage().execute(asyncParams);
 
 
@@ -120,41 +121,5 @@ public class ImageGalleryActivity extends Activity {
 
     }
 
-    private static class Params{
-        ImageView img;
-        String param;
-        Params(ImageView img, String param){
-            this.img = img;
-            this.param = param;
-        }
-    }
-
-
-    private class LoadImage extends AsyncTask<Params, Void, Bitmap> {
-        private ImageView mImg;
-        DisplayMetrics display = ImageGalleryActivity.this.getResources().getDisplayMetrics();
-
-        int width = display.widthPixels;
-
-        protected Bitmap doInBackground(Params... args) {
-            mImg = args[0].img;
-
-            try {
-                bitmap = Bitmap.createScaledBitmap(
-                        BitmapFactory.decodeStream((InputStream) new URL(args[0].param).getContent())
-                        , width, 380, true);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap image) {
-            if (image != null) {
-                mImg.setImageBitmap(image);
-            }
-        }
-    }
 
 }

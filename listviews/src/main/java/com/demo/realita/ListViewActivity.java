@@ -194,13 +194,16 @@ public class ListViewActivity extends BaseActivity {
                     public void run() {
                         mHouseItemAdapter.clear();
                         for (JsonElement item : results) {
+                            HouseItem house = new HouseItem(item);
+                            mHouseItemAdapter.add(house);
+
                             //This is terrible and it has no reason to be here This should be done in query instead
-                            if ((mFilter.qParam == 2 &&
+/*                            if ((mFilter.qParam == 2 &&
                                     FavArr.favList.contains(item.getAsJsonObject().getAsJsonPrimitive("id").getAsString())) || mFilter.qParam < 2) {
                                 HouseItem house = new HouseItem(item);
                                 mHouseItemAdapter.add(house);
                             }
-                        }
+*/                        }
                         //set text view for houses' count
                         TextView numbHouses = (TextView) findViewById(R.id.HousesText);
                         numbHouses.setText("Houses: " + mHouseItemAdapter.getCount());

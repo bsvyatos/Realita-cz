@@ -94,9 +94,8 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
         //Setup and reuse the same listener for each row
         holder.imgView.setOnClickListener(PopupListener);
         holder.imgButt.setOnClickListener(favButtonListener);
-        Integer rowPosition = position;
-        holder.imgView.setTag(rowPosition);
-        holder.imgButt.setTag(rowPosition);
+        holder.imgView.setTag(position);
+        holder.imgButt.setTag(position);
 
         //setting the view to reflect the data we need to display
         holder.addrView.setText(houseItem.mAddress);
@@ -113,7 +112,7 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
             Log.e(TAG, e.getMessage());
         }
 
-        Params asyncParams = new Params(holder.imgView, imgUrl);
+        Params asyncParams = new Params(holder.imgView, imgUrl, 280, 280);
         new LoadImage().execute(asyncParams);
         //holder.imgView.setImageResource(R.drawable.home1);
 
@@ -175,39 +174,5 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
         ImageButton imgButt;
     }
 
-    private static class Params{
-        ImageView img;
-        String param;
-        Params(ImageView img, String param){
-            this.img = img;
-            this.param = param;
-        }
-    }
-
-    private class LoadImage extends AsyncTask<Params, Void, Bitmap> {
-        private ImageView mImg;
-//        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-//        Display display = wm.getDefaultDisplay();
-
-        protected Bitmap doInBackground(Params... args) {
-            mImg = args[0].img;
-
-            try {
-                bitmap = Bitmap.createScaledBitmap(
-                        BitmapFactory.decodeStream((InputStream) new URL(args[0].param).getContent())
-                        , 280, 280, true);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap image) {
-            if (image != null) {
-                mImg.setImageBitmap(image);
-            }
-        }
-    }
 
 }

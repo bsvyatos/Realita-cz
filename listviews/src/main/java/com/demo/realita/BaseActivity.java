@@ -155,18 +155,16 @@ public class BaseActivity extends Activity{
                 mFilter.mOfferType = OfferType.RENT;
             case 2:
                 //sell
-                return;
             case 3:
                 //favourite
-                mFilter.qParam = 2;
+                //mFilter.qParam = 2;
             case 4:
                 //Notifications
-                return;
             case 5:
                 //Sign/Log in
-                return;
         }
-
+        finish();
+        startActivity(getIntent());
         return;
     }
 
