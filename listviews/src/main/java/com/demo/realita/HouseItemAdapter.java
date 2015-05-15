@@ -3,10 +3,12 @@ package com.demo.realita;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -112,7 +114,8 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
             Log.e(TAG, e.getMessage());
         }
 
-        Params asyncParams = new Params(holder.imgView, imgUrl, 280, 280);
+        int px = Math.round(convertDpToPixel(93, getContext()));
+        Params asyncParams = new Params(holder.imgView, imgUrl, px, px);
         new LoadImage().execute(asyncParams);
         //holder.imgView.setImageResource(R.drawable.home1);
 
@@ -134,10 +137,24 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
             Integer viewPosition = (Integer) view.getTag();
             HouseItem p = getItem(viewPosition);
 
-            Toast.makeText(getContext(), p.mHouseInfo, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), Float.toString(convertPixelsToDp(280, getContext())), Toast.LENGTH_SHORT).show();
 
         }
     };
+
+    public static float convertDpToPixel(float dp, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * (metrics.densityDpi / 160f);
+        return px;
+    }
+
+    public static float convertPixelsToDp(float px, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float dp = px / (metrics.densityDpi / 160f);
+        return dp;
+    }
 
     View.OnClickListener favButtonListener = new View.OnClickListener() {
         @Override
