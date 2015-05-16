@@ -13,6 +13,7 @@
     <string name="Equipment">Vybavení</string>
     <string name="Floor">Podlaži</string>
     <string name="Size">Plocha</string>
+    <string name="EnergyType">Energetická třída</string>
     <string name="Balcony">Balkón</string>
     <string name="Terrace">Terasa</string>
     <string name="Yes">Ano</string>

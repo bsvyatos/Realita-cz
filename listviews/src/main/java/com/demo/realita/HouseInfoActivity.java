@@ -129,6 +129,9 @@ public class HouseInfoActivity extends Activity {
                 getResources().getString(R.string.Size), String.valueOf(item.mSize) + " m²"));
         result.add(new Pair<String, String>(
                 getResources().getString(R.string.Dispositions), Utils.HDispositions[item.mLayout]));
+        if (item.mEnergyType != null)
+            result.add(new Pair<String, String>(
+                    getResources().getString(R.string.EnergyType), String.valueOf(item.mEnergyType)));
         result.add(new Pair<String, String>(
                 getResources().getString(R.string.EstateType), Utils.HEstateType[item.mPropertyType.ordinal()]));
         result.add(new Pair<String, String>(
