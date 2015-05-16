@@ -101,7 +101,8 @@ public class ImageGalleryActivity extends Activity {
             }
             DisplayMetrics display = ImageGalleryActivity.this.getResources().getDisplayMetrics();
 
-            Params asyncParams = new Params(imageView, imgUrl, display.widthPixels, 280);
+            Params asyncParams = new Params(imageView, imgUrl, display.widthPixels
+                    , Math.round(display.widthPixels/1.3333f));
             new LoadImage().execute(asyncParams);
 
 
