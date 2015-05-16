@@ -12,6 +12,8 @@
     <string name="EstateType">EstateType</string>
     <string name="Construction">Construction</string>
     <string name="Equipment">Equipment</string>
+    <string name="Floor">Floor</string>
+    <string name="Size">Size</string>
     <string name="Balcony">Balcony</string>
     <string name="Terrace">Terrace</string>
     <string name="Yes">Yes</string>

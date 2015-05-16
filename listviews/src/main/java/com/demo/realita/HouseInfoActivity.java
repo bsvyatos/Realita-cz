@@ -126,6 +126,8 @@ public class HouseInfoActivity extends Activity {
         result.add(new Pair<String, String>(
                 getResources().getString(R.string.Ownership), Utils.HOwnership[item.mOwnership]));
         result.add(new Pair<String, String>(
+                getResources().getString(R.string.Size), String.valueOf(item.mSize) + " m²"));
+        result.add(new Pair<String, String>(
                 getResources().getString(R.string.Dispositions), Utils.HDispositions[item.mLayout]));
         result.add(new Pair<String, String>(
                 getResources().getString(R.string.EstateType), Utils.HEstateType[item.mPropertyType.ordinal()]));
@@ -133,6 +135,8 @@ public class HouseInfoActivity extends Activity {
                 getResources().getString(R.string.Construction), Utils.HConstruction[item.mBuildingType]));
         result.add(new Pair<String, String>(
                 getResources().getString(R.string.Equipment), Utils.HEquipment[item.mEquipment]));
+        result.add(new Pair<String, String>(
+                getResources().getString(R.string.Floor), String.valueOf(item.mFloor)));
         if (item.mBalkony != null)
             result.add(new Pair<String, String>(
                     getResources().getString(R.string.Balcony), item.mBalkony ? YES : NO));

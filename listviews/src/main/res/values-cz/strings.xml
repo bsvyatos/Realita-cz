@@ -11,6 +11,8 @@
     <string name="EstateType">Typ nemovitosti</string>
     <string name="Construction">Typ budovy</string>
     <string name="Equipment">Vybavení</string>
+    <string name="Floor">Podlaži</string>
+    <string name="Size">Plocha</string>
     <string name="Balcony">Balkón</string>
     <string name="Terrace">Terasa</string>
     <string name="Yes">Ano</string>
