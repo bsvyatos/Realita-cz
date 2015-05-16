@@ -86,9 +86,8 @@ public class HouseInfoActivity extends Activity {
         });
 
         //Set fields
-        final String mDescription = item.mFullDescription;
+        final String FullDescription = item.mFullDescription;
         mHouseAddr.setText(item.mAddress);
-        mHouseInfo.setText(mDescription);
         mHousePrice.setText(Utils.numbersFormat().format(item.mPrice) + " Kč");
         mFullDescription.setText(item.mFullDescription);
         mHouseInfo.setText(item.mDescription);
@@ -97,7 +96,7 @@ public class HouseInfoActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent t = new Intent(v.getContext(), DescriptionActivity.class);
-                t.putExtra("Description", mDescription);
+                t.putExtra("Description", FullDescription);
                 startActivity(t);
             }
         });
@@ -113,7 +112,7 @@ public class HouseInfoActivity extends Activity {
             Pair<String, String > item = house_attrs.get(i);
             tv[i]=new TextView(this);
             tv[i].setText(item.first + ": " + item.second);
-            tv[i].setTextSize((float) 20);
+            tv[i].setTextSize((float) 14);
             tv[i].setPadding(10, 10, 10, 10);
             rl.addView(tv[i]);
         }
