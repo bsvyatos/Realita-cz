@@ -1,41 +1,23 @@
 package com.demo.realita;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.demo.realita.R;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.InputStream;
-import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by Svyatoslav on 14-Mar-15.
@@ -114,7 +96,7 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
             Log.e(TAG, e.getMessage());
         }
 
-        int px = Math.round(convertDpToPixel(93, getContext()));
+        int px = Utils.convertDpToPixel(93);
         Params asyncParams = new Params(holder.imgView, imgUrl, px, px);
         new LoadImage().execute(asyncParams);
         //holder.imgView.setImageResource(R.drawable.home1);
@@ -137,24 +119,10 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
             Integer viewPosition = (Integer) view.getTag();
             HouseItem p = getItem(viewPosition);
 
-            Toast.makeText(getContext(), Float.toString(convertPixelsToDp(280, getContext())), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), Float.toString(Utils.convertPixelsToDp(280)), Toast.LENGTH_SHORT).show();
 
         }
     };
-
-    public static float convertDpToPixel(float dp, Context context){
-        Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * (metrics.densityDpi / 160f);
-        return px;
-    }
-
-    public static float convertPixelsToDp(float px, Context context){
-        Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        float dp = px / (metrics.densityDpi / 160f);
-        return dp;
-    }
 
     View.OnClickListener favButtonListener = new View.OnClickListener() {
         @Override

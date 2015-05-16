@@ -33,6 +33,7 @@ public class BaseActivity extends Activity{
     private CharSequence mTitle;
     private String[] mItemTitles;
     private CustomDrawerAdapter mItemAdapter;
+    private Boolean mInitialized = false;
     // slide menu items
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
@@ -45,6 +46,11 @@ public class BaseActivity extends Activity{
     public String[] HEquipment;
 
     private void setEnums() {
+        if (mInitialized)
+            return;
+
+        mInitialized = true;
+        Utils.setDensityDpi(getBaseContext());
         String[] mItems = getResources().getStringArray(R.array.OfferType);
         int i = 0;
         for (OfferType n : OfferType.values()) {

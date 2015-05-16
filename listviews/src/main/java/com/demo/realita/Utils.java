@@ -1,5 +1,9 @@
 package com.demo.realita;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Iterator;
@@ -7,6 +11,8 @@ import java.util.List;
 
 public class Utils {
     private static DecimalFormat mDf = null;
+    private static float mDensityDpi = 0.f;
+
     public static String concatList(List<String> sList, String separator)
     {
         Iterator<String> iter = sList.iterator();
@@ -29,5 +35,22 @@ public class Utils {
         }
 
         return mDf;
+    }
+
+    public static void setDensityDpi(Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        mDensityDpi = metrics.densityDpi;
+    }
+
+    public static int convertDpToPixel(float dp){
+        //assert mDensityDpi != 0.f
+        float px = dp * (mDensityDpi / 160f);
+        return Math.round(px);
+    }
+
+    public static float convertPixelsToDp(float px){
+        float dp = px / (mDensityDpi / 160f);
+        return dp;
     }
 }
