@@ -39,11 +39,6 @@ public class BaseActivity extends Activity{
     private TypedArray navMenuIcons;
     private ArrayList<DrawerItem> navDrawerItems;
     public Filter mFilter;
-    public String[] HDispositions;
-    public String[] HEstateType;
-    public String[] HOwnership;
-    public String[] HConstruction;
-    public String[] HEquipment;
 
     private void setEnums() {
         if (mInitialized)
@@ -63,11 +58,11 @@ public class BaseActivity extends Activity{
             n.setString(mItems[i++]);
         }
 
-        HDispositions = getResources().getStringArray(R.array.Disposition);
-        HEstateType = getResources().getStringArray(R.array.EstateType);
-        HOwnership = getResources().getStringArray(R.array.Ownership);
-        HConstruction = getResources().getStringArray(R.array.Construction);
-        HEquipment = getResources().getStringArray(R.array.Equipment);
+        Utils.HDispositions = getResources().getStringArray(R.array.DispositionType);
+        Utils.HEstateType = getResources().getStringArray(R.array.EstateType);
+        Utils.HOwnership = getResources().getStringArray(R.array.OwnershipType);
+        Utils.HConstruction = getResources().getStringArray(R.array.ConstructionType);
+        Utils.HEquipment = getResources().getStringArray(R.array.EquipmentType);
     }
 
     protected void onCreateDrawer() {

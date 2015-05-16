@@ -29,8 +29,8 @@ public class HouseItem implements Parcelable {
     public int mZipCode;
     public String mImgPreview;
     public String mHouseInfo;
-    public boolean mBalkony;
-    public boolean mTerrace;
+    public Boolean mBalkony;
+    public Boolean mTerrace;
 
     public HouseItem(JsonElement item) {
         this.Id = item.getAsJsonObject().getAsJsonPrimitive("id").getAsString();
@@ -68,10 +68,8 @@ public class HouseItem implements Parcelable {
         if (!(item.getAsJsonObject().get("mImgPreview") instanceof JsonNull))
             this.mImgPreview = item.getAsJsonObject().getAsJsonPrimitive("mImgPreview").getAsString();
         //this.mHouseInfo = item.getAsJsonObject().getAsJsonPrimitive("mHouseInfo").getAsString();
-        if (!(item.getAsJsonObject().get("mBalkony") instanceof JsonNull))
-            this.mBalkony = item.getAsJsonObject().getAsJsonPrimitive("mBalkony").getAsBoolean();
-        if (!(item.getAsJsonObject().get("mTerrace") instanceof JsonNull))
-            this.mTerrace = item.getAsJsonObject().getAsJsonPrimitive("mTerrace").getAsBoolean();
+        this.mBalkony = item.getAsJsonObject().getAsJsonPrimitive("mBalkony").getAsBoolean();
+        this.mTerrace = item.getAsJsonObject().getAsJsonPrimitive("mTerrace").getAsBoolean();
     }
 
     public HouseItem(Parcel in){

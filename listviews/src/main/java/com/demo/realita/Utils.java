@@ -10,6 +10,12 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Utils {
+    public static String[] HDispositions;
+    public static String[] HEstateType;
+    public static String[] HOwnership;
+    public static String[] HConstruction;
+    public static String[] HEquipment;
+
     private static DecimalFormat mDf = null;
     private static float mDensityDpi = 0.f;
 

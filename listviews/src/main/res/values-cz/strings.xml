@@ -6,6 +6,16 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
 
+    <string name="Ownership">Vlastnictví</string>
+    <string name="Dispositions">Dispozice</string>
+    <string name="EstateType">Typ nemovitosti</string>
+    <string name="Construction">Typ budovy</string>
+    <string name="Equipment">Vybavení</string>
+    <string name="Balcony">Balkón</string>
+    <string name="Terrace">Terasa</string>
+    <string name="Yes">Ano</string>
+    <string name="No">Ne</string>
+
     <string-array name="sliding_menu_list">
         <item>Prodej</item>
         <item>Pronájem</item>
@@ -36,7 +46,7 @@
         <item>Spolubydlení</item>
     </string-array>
 
-    <string-array name="Disposition">
+    <string-array name="DispositionType">
         <item>garsoniéra</item>
         <item>1+kk</item>
         <item>1+1</item>
@@ -64,7 +74,7 @@
         <item>Rekreační objekt</item>
     </string-array>
 
-    <string-array name="Ownership">
+    <string-array name="OwnershipType">
         <item>Osobní</item>
         <item>Podílové</item>
         <item>Družstevní</item>
@@ -73,7 +83,7 @@
         <item>Ostatní</item>
     </string-array>
 
-    <string-array name="Construction">
+    <string-array name="ConstructionType">
         <item>Cihla</item>
         <item>Dřevostavba</item>
         <item>Nízkoenergetický</item>
@@ -81,7 +91,7 @@
         <item>Ostatní</item>
     </string-array>
 
-    <string-array name="Equipment">
+    <string-array name="EquipmentType">
         <item>Nevybavený</item>
         <item>Částečně</item>
         <item>Vybavený</item>

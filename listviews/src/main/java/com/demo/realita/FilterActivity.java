@@ -107,7 +107,7 @@ public class FilterActivity extends FragmentActivity
         estateType.setOnClickListener(eTypeOnClick);
         bSave = (Button) findViewById(R.id.button_save);
 
-        HDispositions = getResources().getStringArray(R.array.Disposition);
+        HDispositions = getResources().getStringArray(R.array.DispositionType);
         dMin = (TextView) findViewById(R.id.disp_min_txt);
         dMax = (TextView) findViewById(R.id.disp_max_txt);
 
