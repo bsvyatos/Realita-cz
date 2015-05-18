@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Svyatoslav on 19-Mar-15.
@@ -82,9 +85,8 @@ public class HouseInfoActivity extends Activity {
         });
 
         //Set fields
-        final String mDescription = item.mFullDescription;
+        final String FullDescription = item.mFullDescription;
         mHouseAddr.setText(item.mAddress);
-        mHouseInfo.setText(mDescription);
         mHousePrice.setText(Utils.numbersFormat().format(item.mPrice) + " Kč");
         mFullDescription.setText(item.mFullDescription);
         mHouseInfo.setText(item.mDescription);
@@ -93,26 +95,58 @@ public class HouseInfoActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent t = new Intent(v.getContext(), DescriptionActivity.class);
-                t.putExtra("Description", mDescription);
+                t.putExtra("Description", FullDescription);
                 startActivity(t);
             }
         });
 
         //set up the Image
         //int resID = getResources().getIdentifier(item.mImgPreview, "drawable", getPackageName());
-        final String[] str={"one","two","three","asdfgf"};
+        ArrayList<Pair<String, String >> house_attrs = createAdditionalHouseParams(item);
         final LinearLayout rl=(LinearLayout) findViewById(R.id.linlayout1);
         final TextView[] tv=new TextView[10];
 
-        for(int i=0;i<str.length;i++)
+        for (int i = 0; i < house_attrs.size(); i++)
         {
+            Pair<String, String > item = house_attrs.get(i);
             tv[i]=new TextView(this);
-            tv[i].setText(str[i]);
-            tv[i].setTextSize((float) 20);
+            tv[i].setText(item.first + ": " + item.second);
+            tv[i].setTextSize((float) 14);
             tv[i].setPadding(10, 10, 10, 10);
             rl.addView(tv[i]);
         }
 
+    }
+
+    private ArrayList<Pair<String, String >> createAdditionalHouseParams(HouseItem item){
+        ArrayList<Pair<String, String >> result = new ArrayList<Pair<String, String>>();
+        String YES = getResources().getString(R.string.Yes);
+        String NO = getResources().getString(R.string.No);
+        result.add(new Pair<String, String>(
+                getResources().getString(R.string.Ownership), Utils.HOwnership[item.mOwnership]));
+        result.add(new Pair<String, String>(
+                getResources().getString(R.string.Size), String.valueOf(item.mSize) + " m²"));
+        result.add(new Pair<String, String>(
+                getResources().getString(R.string.Dispositions), Utils.HDispositions[item.mLayout]));
+        if (item.mEnergyType != null)
+            result.add(new Pair<String, String>(
+                    getResources().getString(R.string.EnergyType), String.valueOf(item.mEnergyType)));
+        result.add(new Pair<String, String>(
+                getResources().getString(R.string.EstateType), Utils.HEstateType[item.mPropertyType.ordinal()]));
+        result.add(new Pair<String, String>(
+                getResources().getString(R.string.Construction), Utils.HConstruction[item.mBuildingType]));
+        result.add(new Pair<String, String>(
+                getResources().getString(R.string.Equipment), Utils.HEquipment[item.mEquipment]));
+        result.add(new Pair<String, String>(
+                getResources().getString(R.string.Floor), String.valueOf(item.mFloor)));
+        if (item.mBalkony != null)
+            result.add(new Pair<String, String>(
+                    getResources().getString(R.string.Balcony), item.mBalkony ? YES : NO));
+        if (item.mTerrace != null)
+            result.add(new Pair<String, String>(
+                    getResources().getString(R.string.Terrace), item.mTerrace ? YES : NO));
+
+        return result;
     }
 
     @Override

@@ -7,6 +7,19 @@
     <string name="drawer_close">Close</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
 
+    <string name="Ownership">Ownership</string>
+    <string name="Dispositions">Disposition</string>
+    <string name="EstateType">EstateType</string>
+    <string name="Construction">Construction</string>
+    <string name="Equipment">Equipment</string>
+    <string name="Floor">Floor</string>
+    <string name="Size">Size</string>
+    <string name="EnergyType">Energy type</string>
+    <string name="Balcony">Balcony</string>
+    <string name="Terrace">Terrace</string>
+    <string name="Yes">Yes</string>
+    <string name="No">No</string>
+
     <string-array name="sliding_menu_list">
         <item>Buy</item>
         <item>Rent</item>
@@ -38,7 +51,7 @@
         <item>Roommate</item>
     </string-array>
 
-    <string-array name="Disposition">
+    <string-array name="DispositionType">
         <item>1</item>
         <item>1+kk</item>
         <item>1+1</item>
@@ -66,7 +79,7 @@
         <item>Rekreační objekt</item>
     </string-array>
 
-    <string-array name="Ownership">
+    <string-array name="OwnershipType">
         <item>Osobní</item>
         <item>Podílové</item>
         <item>Družstevní</item>
@@ -75,7 +88,7 @@
         <item>Ostatní</item>
     </string-array>
 
-    <string-array name="Construction">
+    <string-array name="ConstructionType">
         <item>Cihla</item>
         <item>Dřevostavba</item>
         <item>Nízkoenergetický</item>
@@ -83,7 +96,7 @@
         <item>Ostatní</item>
     </string-array>
 
-    <string-array name="Equipment">
+    <string-array name="EquipmentType">
         <item>Nevybavený</item>
         <item>Částečně</item>
         <item>Vybavený</item>
