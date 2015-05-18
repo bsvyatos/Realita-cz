@@ -55,6 +55,7 @@ public class FilterActivity extends FragmentActivity
     TextView dMax;
     TextView minSize;
     TextView maxSize;
+    int tabPos = 0;
 
     private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
 
@@ -192,6 +193,19 @@ public class FilterActivity extends FragmentActivity
 
         setUpTabs();
 
+        ActionBar actionBar = getActionBar();
+
+        //mFilter.mOfferType = OfferType.RENT;
+
+        if(mFilter.mOfferType == OfferType.SALE){
+            actionBar.setSelectedNavigationItem(0);
+        } else if(mFilter.mOfferType == OfferType.RENT){
+            actionBar.setSelectedNavigationItem(1);
+        } else  if(mFilter.mOfferType == OfferType.MATE){
+            actionBar.setSelectedNavigationItem(2);
+        }
+
+
         Intent returnIntent = new Intent();
         setResult(RESULT_CANCELED, returnIntent);
 
@@ -201,6 +215,14 @@ public class FilterActivity extends FragmentActivity
         public void onClick(View v) {
 
             Toast.makeText(getApplicationContext(), "Your preferences have been successfully saved", Toast.LENGTH_SHORT).show();
+            OfferType offerType = OfferType.SALE;
+            switch (tabPos){
+                case 1:
+                    offerType = OfferType.RENT;
+                case 2:
+                    offerType = OfferType.MATE;
+            }
+            mFilter.mOfferType = offerType;
             Intent returnIntent = new Intent();
             returnIntent.putExtra("Filter", mFilter);
             setResult(RESULT_OK, returnIntent);
@@ -393,7 +415,17 @@ public class FilterActivity extends FragmentActivity
     public void onTabSelected(ActionBar.Tab tab, android.app.FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, show the tab contents in the
         // container view.
-        Toast.makeText(getApplicationContext(), "Idk what to say, it prob works", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Idk what to say, it prob works", Toast.LENGTH_SHORT).show();
+        String priceEnd;
+        tabPos = tab.getPosition();
+        if(tabPos == 0){
+            priceEnd = " K?";
+        } else {
+            priceEnd = " K?/month";
+        }
+
+        setText(R.id.min_price, Integer.toString(mFilter.mPricemin) + priceEnd);
+        setText(R.id.max_price, Integer.toString(mFilter.mPricemax) + priceEnd);
     }
 
     @Override

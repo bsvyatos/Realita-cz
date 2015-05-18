@@ -221,13 +221,13 @@
                 android:id="@+id/estateType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
                 android:text="Byt"
                 android:layout_below="@+id/eTypeView"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:src="@drawable/ic_action_next_item"/>
 
         </RelativeLayout>

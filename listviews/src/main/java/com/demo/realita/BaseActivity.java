@@ -147,27 +147,7 @@ public class BaseActivity extends Activity{
         }
     }
 
-    private void drawerHandler(int pos){
-        switch(pos){
-            case 0:
-                mFilter.qParam = 0;
-                mFilter.mOfferType = OfferType.SALE;
-            case 1:
-                mFilter.mOfferType = OfferType.RENT;
-            case 2:
-                //sell
-            case 3:
-                //favourite
-                //mFilter.qParam = 2;
-            case 4:
-                //Notifications
-            case 5:
-                //Sign/Log in
-        }
-        finish();
-        startActivity(getIntent());
-        return;
-    }
+    protected void drawerHandler(int pos){ }
 
     protected void selectItem(int position) {
         // update the main content by replacing fragments

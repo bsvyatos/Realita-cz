@@ -68,7 +68,6 @@ public class ListViewActivity extends BaseActivity {
         //Load my file from internal storage and get Filter
         mFilter = LoadFilter();
         mFilter.qParam = 0;
-
         try {
             mClient = new MobileServiceClient(
                     ConnectValues.AZUREMOBILEURL.toString(),
@@ -88,6 +87,8 @@ public class ListViewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
         super.onCreateDrawer();
+
+        setNavDrawerPos();
 
         mListView = (ListView) findViewById(R.id.myListView);
 
@@ -110,7 +111,7 @@ public class ListViewActivity extends BaseActivity {
             selectItem(0);
         }
 
-    }
+    } //OnCreate()
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -169,7 +170,7 @@ public class ListViewActivity extends BaseActivity {
         ret.sql_end = Utils.concatList(where, " AND ");
 
         return ret;
-    }
+    } //SqlBuilder()
 
     public void showAll(View view) {
         //Show everything, unfiltered
@@ -219,13 +220,46 @@ public class ListViewActivity extends BaseActivity {
             return null;
             }
         }.execute();
-    }
+    } // showAll()
 
     @Override
     protected void onPause() {
         //save mFilter
         SaveFilter();
         super.onPause();
+    }
+
+    @Override
+    protected void drawerHandler(int pos) {
+        switch(pos){
+            case 0:
+                mFilter.mOfferType = OfferType.SALE;
+            case 1:
+                mFilter.mOfferType = OfferType.RENT;
+            case 2:
+                mFilter.mOfferType = OfferType.MATE;
+            case 3:
+                //favourite
+                //mFilter.qParam = 2;
+            case 4:
+                //Notifications
+            case 5:
+                //Sign/Log in
+        }
+        SaveFilter();
+        finish();
+        startActivity(getIntent());
+        return;
+    }
+
+    private void setNavDrawerPos(){
+        if(mFilter.mOfferType == OfferType.SALE){
+            selectItem(0);
+        } else if(mFilter.mOfferType == OfferType.RENT){
+            selectItem(1);
+        } else  if(mFilter.mOfferType == OfferType.MATE){
+            selectItem(2);
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
