@@ -31,8 +31,8 @@ public class ImageGalleryActivity extends Activity {
     int mNumberOfPages;
     int mCurrentPosition;
     String imgUrl;
-    Bitmap bitmap;
     ActionBar mActionBar;
+
     private static final String TAG = ListViewActivity.class.getName();
 
 
@@ -70,7 +70,8 @@ public class ImageGalleryActivity extends Activity {
     public class DetailOnPageListener extends ViewPager.SimpleOnPageChangeListener{
         @Override
         public void onPageSelected(int position){
-            mActionBar.setTitle(" " + Integer.toString(position+1) + " of " + Integer.toString(mNumberOfPages));
+            mActionBar.setTitle(" " + Integer.toString(position+1) + " of "
+                    + Integer.toString(mNumberOfPages));
         }
     }
     @Override

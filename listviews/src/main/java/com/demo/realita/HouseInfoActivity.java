@@ -36,7 +36,6 @@ public class HouseInfoActivity extends Activity {
     CustomViewPager mViewPager;
     ImagePagerAdapter mPagerAdapter;
     int NumberOfPages;
-    Bitmap bitmap;
     String imgUrl;
     HouseItem item;
     JSONArray jArray;

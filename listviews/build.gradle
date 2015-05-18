@@ -23,5 +23,6 @@ dependencies {
     compile 'com.microsoft.azure:azure-mobile-services-android-sdk:2.0.2-beta+'
     compile 'com.android.support:support-v4:19.1.0'
     compile 'com.google.android.gms:play-services:7.3.0'
+    compile 'com.android.support:appcompat-v7:19.+'
 }
 

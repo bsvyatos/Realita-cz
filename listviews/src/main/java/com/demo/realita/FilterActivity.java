@@ -1,15 +1,21 @@
 package com.demo.realita;
 
+import android.app.ActionBar;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +28,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.app.ActionBar.Tab;
+
+
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -37,7 +46,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
  */
 public class FilterActivity extends FragmentActivity
         implements FilterDialogFragment.NoticeDialogListener
-        ,GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks{
+        ,GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks
+        ,ActionBar.TabListener{
     Button bSave;
     Filter mFilter;
     String[] HDispositions;
@@ -45,6 +55,8 @@ public class FilterActivity extends FragmentActivity
     TextView dMax;
     TextView minSize;
     TextView maxSize;
+
+    private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
 
     private static final String TAG = ListViewActivity.class.getName();
 
@@ -178,6 +190,8 @@ public class FilterActivity extends FragmentActivity
 
         bSave.setOnClickListener(bHandler);
 
+        setUpTabs();
+
         Intent returnIntent = new Intent();
         setResult(RESULT_CANCELED, returnIntent);
 
@@ -266,7 +280,6 @@ public class FilterActivity extends FragmentActivity
 
     }
 
-
     private void rebuildGoogleApiClient() {
         // When we build the GoogleApiClient we specify where connected and connection failed
         // callbacks should be returned and which Google APIs our app uses.
@@ -324,7 +337,7 @@ public class FilterActivity extends FragmentActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void showEstateTypeDialog(){
+    public void showEstateTypeDialog() {
         DialogFragment dialog = new EstateTypeDialog();
         dialog.show(getSupportFragmentManager(), "Pick Estate Type");
     }
@@ -360,5 +373,48 @@ public class FilterActivity extends FragmentActivity
         TextView v = (TextView) findViewById(res);
         v.setText(toThis);
     }
+
+    private void setUpTabs(){
+        //Get and set ap actionBar
+        final ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(actionBar.NAVIGATION_MODE_TABS);
+
+        // for each of the sections in the app, add a tab to the action bar.
+        actionBar.addTab(actionBar.newTab().setText("Buy")
+                .setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setText("Rent")
+                .setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setText("Roommate")
+                .setTabListener(this));
+    }
+
+
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, android.app.FragmentTransaction fragmentTransaction) {
+        // When the given tab is selected, show the tab contents in the
+        // container view.
+        Toast.makeText(getApplicationContext(), "Idk what to say, it prob works", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Restore the previously serialized current tab position.
+        if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
+            getActionBar().setSelectedNavigationItem(savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // Serialize the current tab position.
+        outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getActionBar()
+                .getSelectedNavigationIndex());
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, android.app.FragmentTransaction fragmentTransaction) { }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction fragmentTransaction) { }
 
 }
