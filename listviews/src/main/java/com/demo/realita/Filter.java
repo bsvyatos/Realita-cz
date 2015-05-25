@@ -15,6 +15,8 @@ import java.io.Serializable;
 public class Filter implements Parcelable{
     int mPricemin;
     int mPricemax;
+    int mPriceMonthMin;
+    int mPriceMonthMax;
     int mSizemin;
     int mSizemax;
     Boolean mBalkon;
@@ -24,10 +26,12 @@ public class Filter implements Parcelable{
     int maxDisposition;
     String mAddress;
 
-    public Filter(int mPricemin, int mPricemax, int mSizemin, int mSizemax, boolean mBalkon
+    public Filter(int mPricemin, int mPricemax, int mSizemin, int mPriceMonthMin, int mPriceMonthMax, int mSizemax, boolean mBalkon
             , int mOfferType, int qParam, int minDisposition, int maxDisposition, String mAddress) {
         this.mPricemin = mPricemin;
         this.mPricemax = mPricemax;
+        this.mPriceMonthMin = mPriceMonthMin;
+        this.mPriceMonthMax = mPriceMonthMax;
         this.mSizemin = mSizemin;
         this.mSizemax = mSizemax;
         this.mBalkon = mBalkon;
@@ -41,6 +45,8 @@ public class Filter implements Parcelable{
     public Filter(Parcel in){
         this.mPricemin = in.readInt();
         this.mPricemax = in.readInt();
+        this.mPriceMonthMin = in.readInt();
+        this.mPriceMonthMax = in.readInt();
         this.mSizemin = in.readInt();
         this.mSizemax = in.readInt();
         this.mBalkon =  in.readByte() != 0;
@@ -60,6 +66,8 @@ public class Filter implements Parcelable{
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(mPricemin);
         parcel.writeInt(mPricemax);
+        parcel.writeInt(mPriceMonthMin);
+        parcel.writeInt(mPriceMonthMax);
         parcel.writeInt(mSizemin);
         parcel.writeInt(mSizemax);
         parcel.writeByte((byte) (mBalkon ? 1 : 0));

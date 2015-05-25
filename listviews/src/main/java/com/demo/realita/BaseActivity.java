@@ -165,6 +165,12 @@ public class BaseActivity extends Activity{
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
+    protected void selectItemImp(int pos){
+        mDrawerList.setItemChecked(pos, true);
+        setTitle(mItemTitles[pos]);
+
+    }
+
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;

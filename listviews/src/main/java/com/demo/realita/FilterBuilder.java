@@ -6,6 +6,8 @@ package com.demo.realita;
 public class FilterBuilder {
     static int mPricemin = 0;
     static int mPricemax = 50000000;
+    static int mPriceMonthMin = 0;
+    static int mPriceMonthMax = 50000000;
     static int mSizemin = 0;
     static int mSizemax = 1000;
     static Boolean mBalkon = true;
@@ -17,7 +19,7 @@ public class FilterBuilder {
     public FilterBuilder(){ }
 
     public Filter build(){
-        return new Filter(mPricemin, mPricemax, mSizemin, mSizemax, mBalkon
+        return new Filter(mPricemin, mPricemax, mPriceMonthMin, mPriceMonthMax, mSizemin, mSizemax, mBalkon
                 , mOfferType, qParam, minDisposition, maxDisposition, "");
     }
 
@@ -28,6 +30,16 @@ public class FilterBuilder {
 
     public FilterBuilder priceMax(int mPricemax){
         this.mPricemax = mPricemax;
+        return this;
+    }
+
+    public FilterBuilder priceMonthMin(int mPriceMonthMin){
+        this.mPriceMonthMin = mPriceMonthMin;
+        return this;
+    }
+
+    public FilterBuilder priceMonthMax(int mPriceMonthMax){
+        this.mPriceMonthMax = mPriceMonthMax;
         return this;
     }
 

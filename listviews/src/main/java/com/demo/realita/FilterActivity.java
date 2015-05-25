@@ -215,14 +215,6 @@ public class FilterActivity extends FragmentActivity
         public void onClick(View v) {
 
             Toast.makeText(getApplicationContext(), "Your preferences have been successfully saved", Toast.LENGTH_SHORT).show();
-            OfferType offerType = OfferType.SALE;
-            switch (tabPos){
-                case 1:
-                    offerType = OfferType.RENT;
-                case 2:
-                    offerType = OfferType.MATE;
-            }
-            mFilter.mOfferType = offerType;
             Intent returnIntent = new Intent();
             returnIntent.putExtra("Filter", mFilter);
             setResult(RESULT_OK, returnIntent);
@@ -373,13 +365,32 @@ public class FilterActivity extends FragmentActivity
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, String uInput, int mDialogState) {
         // User touched the dialog's positive button
+        //TODO change solution, too much code is being repeated
         int mInput = Integer.parseInt(uInput);
+        int pMin;
+        int pMax;
+        String mCurr = " K?";
+        boolean isSale = mFilter.mOfferType == OfferType.RENT ? true : false;
+
         if(mDialogState == 0){
-            mFilter.mPricemin = mInput;
-            setText(R.id.min_price, Integer.toString(mFilter.mPricemin) + " K?");
+            pMin = mInput;
+            if(isSale){
+                mFilter.mPricemin = pMin;
+            } else {
+                mFilter.mPriceMonthMin = pMin;
+                mCurr += "/month";
+            }
+            setText(R.id.min_price, Integer.toString(pMin) + mCurr);
+
         } else{
-            mFilter.mPricemax = mInput;
-            setText(R.id.max_price, Integer.toString(mFilter.mPricemax) + " K?");
+            pMax = mInput;
+            if(isSale){
+                mFilter.mPricemax = pMax;
+            } else {
+                mFilter.mPriceMonthMax = pMax;
+                mCurr += "/month";
+            }
+            setText(R.id.max_price, Integer.toString(pMax) + mCurr);
         }
         dialog.dismiss();
         findViewById(R.id.filter_main_layout).requestFocus();
@@ -403,11 +414,11 @@ public class FilterActivity extends FragmentActivity
 
         // for each of the sections in the app, add a tab to the action bar.
         actionBar.addTab(actionBar.newTab().setText("Buy")
-                .setTabListener(this));
+                .setTabListener(this), false);
         actionBar.addTab(actionBar.newTab().setText("Rent")
-                .setTabListener(this));
+                .setTabListener(this), false);
         actionBar.addTab(actionBar.newTab().setText("Roommate")
-                .setTabListener(this));
+                .setTabListener(this), false);
     }
 
 
@@ -418,14 +429,32 @@ public class FilterActivity extends FragmentActivity
         Toast.makeText(getApplicationContext(), "Idk what to say, it prob works", Toast.LENGTH_SHORT).show();
         String priceEnd;
         tabPos = tab.getPosition();
+        int pMin;
+        int pMax;
+
         if(tabPos == 0){
             priceEnd = " K?";
+            pMin =  mFilter.mPricemin;
+            pMax = mFilter.mPricemax;
         } else {
             priceEnd = " K?/month";
+            pMin = mFilter.mPriceMonthMin;
+            pMax = mFilter.mPriceMonthMax;
         }
 
-        setText(R.id.min_price, Integer.toString(mFilter.mPricemin) + priceEnd);
-        setText(R.id.max_price, Integer.toString(mFilter.mPricemax) + priceEnd);
+        switch (tabPos){
+            case 0:
+                mFilter.mOfferType = OfferType.SALE;
+                break;
+            case 1:
+                mFilter.mOfferType = OfferType.RENT;
+                break;
+            case 2:
+                mFilter.mOfferType = OfferType.MATE;
+        }
+
+        setText(R.id.min_price, Integer.toString(pMin) + priceEnd);
+        setText(R.id.max_price, Integer.toString(pMax) + priceEnd);
     }
 
     @Override

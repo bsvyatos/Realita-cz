@@ -234,10 +234,13 @@ public class ListViewActivity extends BaseActivity {
         switch(pos){
             case 0:
                 mFilter.mOfferType = OfferType.SALE;
+                break;
             case 1:
                 mFilter.mOfferType = OfferType.RENT;
+                break;
             case 2:
                 mFilter.mOfferType = OfferType.MATE;
+                break;
             case 3:
                 //favourite
                 //mFilter.qParam = 2;
@@ -247,18 +250,17 @@ public class ListViewActivity extends BaseActivity {
                 //Sign/Log in
         }
         SaveFilter();
-        finish();
-        startActivity(getIntent());
+        showAll(mListView);
         return;
     }
 
     private void setNavDrawerPos(){
         if(mFilter.mOfferType == OfferType.SALE){
-            selectItem(0);
+            selectItemImp(0);
         } else if(mFilter.mOfferType == OfferType.RENT){
-            selectItem(1);
+            selectItemImp(1);
         } else  if(mFilter.mOfferType == OfferType.MATE){
-            selectItem(2);
+            selectItemImp(2);
         }
     }
 
