@@ -155,10 +155,21 @@ public class ListViewActivity extends BaseActivity {
         SqlString ret = new SqlString();
         List<String> where = new ArrayList<String>();
 
+        int pMin;
+        int pMax;
+
+        if(filter.mOfferType.ordinal() == 0){
+            pMin = filter.mPricemin;
+            pMax = filter.mPricemax;
+        } else {
+            pMin = filter.mPriceMonthMin;
+            pMax = filter.mPriceMonthMax;
+        }
+
         where.add("mOfferType = " + filter.mOfferType.ordinal());
-        if (filter.mPricemin != FilterBuilder.mPricemin)
+        if (pMin != FilterBuilder.mPricemin)
             where.add("mPrice >= " + filter.mPricemin);
-        if (filter.mPricemax != FilterBuilder.mPricemax)
+        if (pMax != FilterBuilder.mPricemax)
             where.add("mPrice <= " + filter.mPricemax);
         if (filter.mSizemin != FilterBuilder.mSizemin)
             where.add("mSize >= " + filter.mSizemin);

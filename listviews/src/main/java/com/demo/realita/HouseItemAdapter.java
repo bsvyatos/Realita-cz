@@ -16,6 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.process.BitmapProcessor;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,6 +35,7 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
     FavouriteArray FavArr;
     Bitmap bitmap;
     String imgUrl;
+    ImageLoader mImgLoader;
     private static final String TAG = ListViewActivity.class.getName();
 
 
@@ -40,6 +45,10 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
         this.mContext = context;
         this.mLayoutResourceId = resource;
         this.FavArr = FavArr;
+        ImageLoaderConfiguration config= new ImageLoaderConfiguration.Builder(context)
+                 .denyCacheImageMultipleSizesInMemory()
+                 .build();
+        ImageLoader.getInstance().init(config);
     }
 
     @Override
@@ -97,9 +106,26 @@ public class HouseItemAdapter extends ArrayAdapter<HouseItem>{
             Log.e(TAG, e.getMessage());
         }
 
-        int px = Utils.convertDpToPixel(93);
+        final int px = Utils.convertDpToPixel(93);
+
+        DisplayImageOptions imgOptions = new DisplayImageOptions.Builder()
+                .showImageOnFail(R.drawable.home)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .postProcessor(new BitmapProcessor() {
+                    @Override
+                    public Bitmap process(Bitmap bmp) {
+                        return Bitmap.createScaledBitmap(bmp, px, px, false);
+                    }
+                })
+                .build();
+
+        mImgLoader = ImageLoader.getInstance();
+        mImgLoader.displayImage(imgUrl, holder.imgView, imgOptions);
+        /*
         Params asyncParams = new Params(holder.imgView, imgUrl, px, px);
         new LoadImage().execute(asyncParams);
+        */
         //holder.imgView.setImageResource(R.drawable.home1);
 
 

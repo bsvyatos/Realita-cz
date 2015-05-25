@@ -370,7 +370,7 @@ public class FilterActivity extends FragmentActivity
         int pMin;
         int pMax;
         String mCurr = " K?";
-        boolean isSale = mFilter.mOfferType == OfferType.RENT ? true : false;
+        boolean isSale = mFilter.mOfferType == OfferType.SALE ? true : false;
 
         if(mDialogState == 0){
             pMin = mInput;
